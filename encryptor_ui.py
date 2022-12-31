@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Encryptor(object):
+class Ui_Encryptor(QtWidgets.QWidget):
     def setupUi(self, Encryptor):
         Encryptor.setObjectName("Encryptor")
         Encryptor.resize(1440, 872)
