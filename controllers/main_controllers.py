@@ -1,8 +1,9 @@
 from PyQt5.QtCore import QDir
-from PyQt5.QtWidgets import QFileDialog, QLabel, QPushButton, QListWidget
+from PyQt5.QtWidgets import QFileDialog, QLabel, QPushButton, QListWidget, QWidget
 
 import utils
 from main_ui import Ui_MainWindow
+from encryptor_ui import Ui_Encryptor
 
 
 class MainWindowController(Ui_MainWindow):
@@ -94,7 +95,17 @@ class MainWindowController(Ui_MainWindow):
             self.homeHorizontalLayout.addWidget(newProductButton)
         else:
             selectedProduct = self.productListWidget.currentItem().text()
-            print(selectedProduct)
+            self.homeVerticalLayout.removeWidget(self.homeMainWidget)
+            self.homeMainWidget.deleteLater()
+            ui_encryptor = Ui_Encryptor()
+            encryptor = QWidget()
+            ui_encryptor.setupUi(encryptor)
+            self.homeVerticalLayout.addWidget(encryptor)
+
+            # change labels
+            ui_encryptor.productLabel.setText(f"Product: {selectedProduct}")
+
+
 
 
 

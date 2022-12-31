@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>Encryptor</class>
+ <widget class="QWidget" name="Encryptor">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -19,13 +19,13 @@
      <x>9</x>
      <y>10</y>
      <width>1411</width>
-     <height>851</height>
+     <height>741</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QWidget" name="widget" native="true">
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="productLabel">
        <property name="geometry">
         <rect>
          <x>179</x>
@@ -38,21 +38,21 @@
         <string>Header</string>
        </property>
       </widget>
-      <widget class="QListWidget" name="listWidget">
+      <widget class="QListWidget" name="encryptorListWidget">
        <property name="geometry">
         <rect>
          <x>-5</x>
          <y>40</y>
          <width>1421</width>
-         <height>641</height>
+         <height>531</height>
         </rect>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="changeContentButton">
        <property name="geometry">
         <rect>
          <x>-8</x>
-         <y>680</y>
+         <y>570</y>
          <width>1431</width>
          <height>51</height>
         </rect>
@@ -61,11 +61,11 @@
         <string>CHANGE CONTENT</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="outputDirectoryButton">
        <property name="geometry">
         <rect>
          <x>-8</x>
-         <y>720</y>
+         <y>610</y>
          <width>1431</width>
          <height>51</height>
         </rect>
@@ -74,11 +74,11 @@
         <string>OUTPUT DIRECTORY</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="startEncryptionButton">
        <property name="geometry">
         <rect>
          <x>-10</x>
-         <y>800</y>
+         <y>690</y>
          <width>1431</width>
          <height>51</height>
         </rect>
@@ -87,11 +87,11 @@
         <string>START ENCRYPTION</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="outputDirectoryLabel">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>770</y>
+         <y>660</y>
          <width>1381</width>
          <height>31</height>
         </rect>
