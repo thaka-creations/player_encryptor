@@ -43,8 +43,8 @@ class MainWindowController(Ui_MainWindow):
             locationLabel = QLabel()
             locationLabel.setText(file)
 
-            with open("file.txt", "w") as f:
-                f.write(file)
+            # write file
+            utils.write_file(file)
 
             self.altWidgetLayout.addWidget(fileLabel)
             self.altWidgetLayout.addWidget(locationLabel)
@@ -73,6 +73,9 @@ class MainWindowController(Ui_MainWindow):
 
                     self.altWidgetLayout.addWidget(fileLabel)
                     self.altWidgetLayout.addWidget(locationLabel)
+
+                # write file line by line
+                utils.write_lines_to_file(files)
 
             else:
                 errorLabel = QLabel()
