@@ -75,8 +75,7 @@ class MainWindowController(Ui_MainWindow):
                     self.altWidgetLayout.addWidget(locationLabel)
 
                 # write file line by line
-                print(files)
-                utils.write_lines_to_file(files)
+                utils.write_lines_to_file([f"{folder}/{file}" for file in files])
 
             else:
                 errorLabel = QLabel()
@@ -115,7 +114,7 @@ class MainWindowController(Ui_MainWindow):
             # read line by line
             file_content = utils.get_file_contents()
             for line in file_content:
-                ui_encryptor.encryptorListWidget.addItem(file_content)
+                ui_encryptor.encryptorListWidget.addItem(line)
 
 
 

@@ -18,8 +18,11 @@ def get_file_contents():
 
 
 def write_lines_to_file(lines):
-    with open("file.txt", "w") as f:
-        f.writelines(lines)
+    print("lines", lines)
+    with open("file.txt", "w"
+              ) as f:
+        for element in lines:
+            f.write(str(element) + '\n')
 
 
 def write_file(contents):
