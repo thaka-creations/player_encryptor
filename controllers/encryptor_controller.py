@@ -11,5 +11,5 @@ class EncryptorController(Ui_Encryptor):
     # set the output directory
     def output_directory_dialog(self):
         directory = QFileDialog.getExistingDirectory()
-        self.outputDirectoryLabel.setText(directory)
+        self.outputDirectoryLabel.setText(f"Output Directory: {directory}")
 

@@ -43,6 +43,9 @@ class MainWindowController(Ui_MainWindow):
             locationLabel = QLabel()
             locationLabel.setText(file)
 
+            with open("file.txt", "w") as f:
+                f.write(file)
+
             self.altWidgetLayout.addWidget(fileLabel)
             self.altWidgetLayout.addWidget(locationLabel)
 
@@ -70,6 +73,7 @@ class MainWindowController(Ui_MainWindow):
 
                     self.altWidgetLayout.addWidget(fileLabel)
                     self.altWidgetLayout.addWidget(locationLabel)
+
             else:
                 errorLabel = QLabel()
                 errorLabel.setText("No video files found in the selected folder")
