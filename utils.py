@@ -11,8 +11,10 @@ def list_products():
 
 
 def get_file_contents():
+    # read file line by line
     with open("file.txt", "r") as f:
-        return f.read()
+        lines = f.readlines()
+        return lines
 
 
 def write_lines_to_file(lines):

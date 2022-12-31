@@ -75,6 +75,7 @@ class MainWindowController(Ui_MainWindow):
                     self.altWidgetLayout.addWidget(locationLabel)
 
                 # write file line by line
+                print(files)
                 utils.write_lines_to_file(files)
 
             else:
@@ -111,9 +112,11 @@ class MainWindowController(Ui_MainWindow):
             # change labels
             ui_encryptor.productLabel.setText(f"Product: {selectedProduct}")
 
-            # line to line
+            # read line by line
             file_content = utils.get_file_contents()
-            ui_encryptor.encryptorListWidget.addItem(file_content)
+            for line in file_content:
+                ui_encryptor.encryptorListWidget.addItem(file_content)
+
 
 
 
