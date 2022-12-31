@@ -14,11 +14,10 @@ def get_file_contents():
     # read file line by line
     with open("file.txt", "r") as f:
         lines = f.readlines()
-        return lines
+        return [line.strip() for line in lines]
 
 
 def write_lines_to_file(lines):
-    print("lines", lines)
     with open("file.txt", "w"
               ) as f:
         for element in lines:
@@ -28,3 +27,13 @@ def write_lines_to_file(lines):
 def write_file(contents):
     with open("file.txt", "w") as f:
         f.write(contents)
+
+
+def retrieve_product(request_id):
+    request_id = request_id.split(" ")[0]
+    url = f"http://localhost:8000/api/v1/products/{request_id}"
+    try:
+        response = requests.get(url)
+        return True, response.json()['encryption_key']
+    except ConnectionError:
+        return False, "Connection Error"
