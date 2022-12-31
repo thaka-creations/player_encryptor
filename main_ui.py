@@ -46,8 +46,7 @@ class Ui_MainWindow(object):
         self.homeHorizontalLayout.setObjectName("homeHorizontalLayout")
         self.selectFilesButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.selectFilesButton.setStyleSheet("background: #6B62AB;\n"
-"color: white;\n"
-"cursor: pointer;")
+"color: white;")
         self.selectFilesButton.setObjectName("selectFilesButton")
         self.homeHorizontalLayout.addWidget(self.selectFilesButton, 0, QtCore.Qt.AlignTop)
         self.selectFolderButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)

@@ -1,10 +1,14 @@
 from PyQt5.QtCore import QDir
-from PyQt5.QtWidgets import QFileDialog, QLabel, QPushButton
+from PyQt5.QtWidgets import QFileDialog, QLabel, QPushButton, QListWidget
 
+import utils
 from main_ui import Ui_MainWindow
 
 
 class MainWindowController(Ui_MainWindow):
+    def __init__(self):
+        self.productListWidget = QListWidget()
+
     def setupUi(self, MainWindow):
         super().setupUi(MainWindow)
         self.selectFilesButton.clicked.connect(self.open_file_dialog)
@@ -78,10 +82,19 @@ class MainWindowController(Ui_MainWindow):
             newProductButton = QPushButton()
             newProductButton.setText("New Product")
 
+            # check if products are available
+            status, response = utils.list_products()
+
+            if status:
+                for product in response:
+                    self.productListWidget.addItem(f"{product['id']}  {product['name'].title()}")
+                self.altWidgetLayout.addWidget(self.productListWidget)
+
             self.createSelectProductButton.setText("Select Product")
             self.homeHorizontalLayout.addWidget(newProductButton)
         else:
-            pass
+            selectedProduct = self.productListWidget.currentItem().text()
+            print(selectedProduct)
 
 
 
