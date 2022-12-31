@@ -1,5 +1,5 @@
 from PyQt5.QtCore import QDir
-from PyQt5.QtWidgets import QFileDialog, QLabel
+from PyQt5.QtWidgets import QFileDialog, QLabel, QPushButton
 
 from main_ui import Ui_MainWindow
 
@@ -10,12 +10,16 @@ class MainWindowController(Ui_MainWindow):
         self.selectFilesButton.clicked.connect(self.open_file_dialog)
         self.selectFolderButton.clicked.connect(self.open_folder_dialog)
         self.clearFilesButton.clicked.connect(self.clear_files)
+        self.createSelectProductButton.clicked.connect(self.create_select_product)
 
-    def clear_files(self):
-        while self.altWidgetLayout.count():
-            child = self.altWidgetLayout.takeAt(0)
-            if child.widget():
-                child.widget().deleteLater()
+    # clear all widgets from the layouts
+    @staticmethod
+    def clear_files(layouts):
+        for layout in layouts:
+            while layout.count():
+                child = layout.takeAt(0)
+                if child.widget():
+                    child.widget().deleteLater()
 
     def open_file_dialog(self):
         file_dialog = QFileDialog()
@@ -26,7 +30,7 @@ class MainWindowController(Ui_MainWindow):
         if file_dialog.exec_():
             # get the selected file
             file = file_dialog.selectedFiles()[0]
-            self.clear_files()
+            self.clear_files([self.altWidgetLayout])
             # extract the file name
             file_name = file.split("/")[-1]
             fileLabel = QLabel()
@@ -50,7 +54,7 @@ class MainWindowController(Ui_MainWindow):
             directory.setFilter(QDir.Files)  # set filter to only show files
 
             files = directory.entryList()  # list of files in the selected folder
-            self.clear_files()
+            self.clear_files([self.altWidgetLayout])
 
             if files:
                 for file in files:
@@ -65,5 +69,19 @@ class MainWindowController(Ui_MainWindow):
                 errorLabel = QLabel()
                 errorLabel.setText("No video files found in the selected folder")
                 self.altWidgetLayout.addWidget(errorLabel)
+                self.altWidgetLayout.addWidget(errorLabel)
+
+    def create_select_product(self):
+        if self.createSelectProductButton.text() == "Create or Select Product":
+            layouts = [self.homeHorizontalLayout, self.altWidgetLayout]
+            self.clear_files(layouts)
+            newProductButton = QPushButton()
+            newProductButton.setText("New Product")
+
+            self.createSelectProductButton.setText("Select Product")
+            self.homeHorizontalLayout.addWidget(newProductButton)
+        else:
+            pass
+
 
 
