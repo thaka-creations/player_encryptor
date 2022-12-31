@@ -9,6 +9,13 @@ class MainWindowController(Ui_MainWindow):
         super().setupUi(MainWindow)
         self.selectFilesButton.clicked.connect(self.open_file_dialog)
         self.selectFolderButton.clicked.connect(self.open_folder_dialog)
+        self.clearFilesButton.clicked.connect(self.clear_files)
+
+    def clear_files(self):
+        while self.altWidgetLayout.count():
+            child = self.altWidgetLayout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
 
     def open_file_dialog(self):
         file_dialog = QFileDialog()
@@ -19,7 +26,7 @@ class MainWindowController(Ui_MainWindow):
         if file_dialog.exec_():
             # get the selected file
             file = file_dialog.selectedFiles()[0]
-
+            self.clear_files()
             # extract the file name
             file_name = file.split("/")[-1]
             fileLabel = QLabel()
@@ -40,9 +47,10 @@ class MainWindowController(Ui_MainWindow):
             folder = folder_dialog.selectedFiles()[0]
             directory = QDir(folder)
             directory.setNameFilters(["*.mp4", "*.avi", "*.mkv"])
-            directory.setFilter(QDir.Files) # set filter to only show files
+            directory.setFilter(QDir.Files)  # set filter to only show files
 
-            files = directory.entryList() # list of files in the selected folder
+            files = directory.entryList()  # list of files in the selected folder
+            self.clear_files()
 
             if files:
                 for file in files:
