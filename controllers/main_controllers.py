@@ -108,6 +108,11 @@ class MainWindowController(Ui_MainWindow):
             # change labels
             ui_encryptor.productLabel.setText(f"Product: {selectedProduct}")
 
+            # line to line
+            file_content = utils.get_file_contents()
+            ui_encryptor.encryptorListWidget.addItem(file_content)
+
+
 
 
 
