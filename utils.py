@@ -22,16 +22,26 @@ def get_file_contents():
 
 def write_file_properties(contents):
     # get file properties
-    file_list = [
-        {
-            "name": os.path.basename(element),
-            "size": os.stat(element).st_size,
-            "extension": os.path.splitext(element)[1],
-            "duration": ffmpeg.input(element).metadata['duration'],
-            "frame_rate": ffmpeg.input(element).metadata['fps']
-        }
-        for element in contents
-    ]
+    file_list = []
+
+    for element in contents:
+        name = os.path.basename(element)
+        size = os.stat(element).st_size
+        extension = os.path.splitext(element)[1]
+
+        try:
+            info = ffmpeg.probe(element)
+            duration = float(info['format']['duration'])
+        except Exception as e:
+            print(e)
+            duration = None
+
+        file_list.append({
+            "name": name,
+            "size": size,
+            "extension": extension,
+            "duration": duration
+        })
 
     with open("properties.json", "w") as f:
         json.dump(file_list, f)
