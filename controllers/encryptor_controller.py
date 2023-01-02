@@ -16,7 +16,8 @@ class EncryptorController(Ui_Encryptor):
         self.outputDirectoryLabel.setText(f"Output Directory: {directory}")
 
     def encrypt_files(self):
-        status, key = utils.retrieve_product(self.productLabel.text().split(": ")[1])
+        request_id = self.productLabel.text().split(": ")[1]
+        status, key = utils.retrieve_product(request_id)
         if not status:
             self.display_message("Error", "Product not found")
             return
@@ -26,6 +27,13 @@ class EncryptorController(Ui_Encryptor):
             self.display_message("Error", "Please select an output directory")
             return
         read_paths = utils.get_file_contents()
+
+        # send file to server
+        status_code = utils.send_encrypted_files(request_id)
+
+        if not status_code:
+            self.display_message("Error", "Files not sent to server. Try again later")
+            return
 
         for path in read_paths:
             # encrypt the file

@@ -73,3 +73,22 @@ def retrieve_product(request_id):
         return True, response.json()['encryption_key']
     except ConnectionError:
         return False, "Connection Error"
+
+
+# send encrypted file to server
+def send_encrypted_files(product_id):
+    product_id = product_id.split(" ")[0]
+    with open("properties.json", "r") as f:
+        file_list = json.load(f)
+
+    url = "http://localhost:8000/api/v1/videos/add-video"
+    payload = {"product": product_id, "file_list": file_list}
+    response = requests.post(url, json=payload)
+
+    if response.status_code == 200:
+        return True
+    else:
+        print(response.json()['message'])
+        return False
+
+
