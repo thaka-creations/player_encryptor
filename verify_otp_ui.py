@@ -64,7 +64,7 @@ class Ui_verifyOtpForm(object):
 "border-radius: 5px;")
         self.resendOtpButton.setObjectName("resendOtpButton")
         self.label = QtWidgets.QLabel(self.frame)
-        self.label.setGeometry(QtCore.QRect(70, 30, 451, 41))
+        self.label.setGeometry(QtCore.QRect(20, 30, 561, 41))
         self.label.setStyleSheet("font: 54pt \"Chalkduster\";\n"
 "color: #5968B0;")
         self.label.setObjectName("label")
@@ -92,4 +92,4 @@ class Ui_verifyOtpForm(object):
         self.otpCodeInput.setPlaceholderText(_translate("verifyOtpForm", "OTP CODE"))
         self.verifyOtpButton.setText(_translate("verifyOtpForm", "VERIFY OTP"))
         self.resendOtpButton.setText(_translate("verifyOtpForm", "RESEND OTP"))
-        self.label.setText(_translate("verifyOtpForm", "TAFA PLAYER"))
+        self.label.setText(_translate("verifyOtpForm", "TAFA ENCRYPTOR"))

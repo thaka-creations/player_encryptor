@@ -79,7 +79,8 @@ class RegistrationController(Ui_registrationForm):
             "email": email,
             "phone": phone,
             "password": password,
-            "confirm_password": confirm_password
+            "confirm_password": confirm_password,
+            "is_staff": True
         }
 
         status_code, response = user_utils.register_user(payload)

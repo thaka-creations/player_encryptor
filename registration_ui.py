@@ -91,7 +91,7 @@ class Ui_registrationForm(object):
         self.confirmPasswordInput.setEchoMode(QtWidgets.QLineEdit.Password)
         self.confirmPasswordInput.setObjectName("confirmPasswordInput")
         self.label = QtWidgets.QLabel(self.frame)
-        self.label.setGeometry(QtCore.QRect(160, 70, 431, 51))
+        self.label.setGeometry(QtCore.QRect(110, 70, 561, 51))
         self.label.setStyleSheet("font: 54pt \"Chalkduster\";\n"
 "color: #5968B0;")
         self.label.setObjectName("label")
@@ -131,6 +131,6 @@ class Ui_registrationForm(object):
         self.phoneInput.setPlaceholderText(_translate("registrationForm", "Phone"))
         self.passwordInput.setPlaceholderText(_translate("registrationForm", "Password"))
         self.confirmPasswordInput.setPlaceholderText(_translate("registrationForm", "Confirm Password"))
-        self.label.setText(_translate("registrationForm", "TAFA PLAYER"))
+        self.label.setText(_translate("registrationForm", "TAFA ENCRYPTOR"))
         self.registerUserButton.setText(_translate("registrationForm", "REGISTER"))
         self.redirectToLoginButton.setText(_translate("registrationForm", "Already have an account, Login"))
