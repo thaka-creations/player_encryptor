@@ -1,3 +1,5 @@
+import pickle
+import struct
 from PyQt5.QtWidgets import QFileDialog, QMessageBox
 from cryptography.fernet import Fernet
 import utils
@@ -15,6 +17,7 @@ class EncryptorController(Ui_Encryptor):
         directory = QFileDialog.getExistingDirectory()
         self.outputDirectoryLabel.setText(f"Output Directory: {directory}")
 
+    # encrypt files
     def encrypt_files(self):
         request_id = self.productLabel.text().split(": ")[1]
         status, key = utils.retrieve_product(request_id)
@@ -26,25 +29,29 @@ class EncryptorController(Ui_Encryptor):
         if not output_directory:
             self.display_message("Error", "Please select an output directory")
             return
-        read_paths = utils.get_file_contents()
 
         # send file to server
-        status_code = utils.send_encrypted_files(request_id)
+        status_code, response = utils.send_encrypted_files(request_id)
 
         if not status_code:
-            self.display_message("Error", "Files not sent to server. Try again later")
+            self.display_message("Error", response)
             return
 
-        for path in read_paths:
+        for i in response:
             # encrypt the file
-            with open(path, "rb") as file:
+            with open(i['file_path'], "rb") as file:
                 original = file.read()
 
+            file_name = i['name']
+            file_id = i['video_id'].encode()
             encrypted = fernet.encrypt(original)
 
+            # pack the tag and encrypted data into a single binary string
+            packed_data = pickle.dumps((file_id, encrypted))
+
             # output the encrypted file
-            with open(f"{output_directory}/{path.split('/')[-1]}", "wb") as f:
-                f.write(encrypted)
+            with open(f"{output_directory}/{file_name}", "wb") as f:
+                f.write(packed_data)
 
         self.display_message("Success", "Encryption Completed Successfully")
         return
@@ -62,4 +69,3 @@ class EncryptorController(Ui_Encryptor):
             message_box.setIcon(QMessageBox.Warning)
 
         message_box.exec_()
-

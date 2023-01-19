@@ -2,6 +2,40 @@ import json
 import os
 import requests
 import ffmpeg
+import keyring
+
+
+# store headers using keyring
+def store_headers(authorization, jwtauth, refresh_token):
+    try:
+        keyring.set_password("tafa_encryptor", "authorization", f"Bearer {authorization}")
+        keyring.set_password("tafa_encryptor", "jwtauth", f"Bearer {jwtauth}")
+        keyring.set_password("tafa_encryptor", "refresh_token", f"Bearer {refresh_token}")
+        return True
+    except Exception as e:
+        print(e)
+        return False
+
+
+# retrieve headers from keyring
+def retrieve_headers():
+    try:
+        authorization = keyring.get_password("tafa_encryptor", "authorization")
+        jwt = keyring.get_password("tafa_encryptor", "jwtauth")
+        if authorization is None or jwt is None:
+            return False
+        return {"Authorization": authorization, "JWTAUTH": jwt}
+    except Exception as e:
+        print(e)
+        return False
+
+
+# check if user is authenticated
+def is_authenticated():
+    authenticated_user = retrieve_headers()
+    if isinstance(authenticated_user, dict):
+        return True
+    return False
 
 
 def list_products():
@@ -40,7 +74,8 @@ def write_file_properties(contents):
             "name": name,
             "size": size,
             "extension": extension,
-            "duration": duration
+            "duration": duration,
+            "file_path": element
         })
 
     with open("properties.json", "w") as f:
@@ -62,7 +97,7 @@ def write_file(contents):
         f.write(contents)
 
     # get file properties
-    write_file_properties(contents)
+    write_file_properties([contents])
 
 
 def retrieve_product(request_id):
@@ -86,9 +121,7 @@ def send_encrypted_files(product_id):
     response = requests.post(url, json=payload)
 
     if response.status_code == 200:
-        return True
+        return True, response.json()['message']
     else:
         print(response.json()['message'])
-        return False
-
-
+        return False, "Files not sent to server. Try again later"

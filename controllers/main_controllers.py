@@ -1,16 +1,24 @@
-from PyQt5.QtCore import QDir
-from PyQt5.QtWidgets import QFileDialog, QLabel, QPushButton, QListWidget, QWidget
-
 import utils
+import sys
+from PyQt5.QtCore import QDir
+from PyQt5.QtWidgets import QFileDialog, QLabel, QPushButton, QListWidget, QDialog
 from main_ui import Ui_MainWindow
-from controllers import encryptor_controller
+from controllers import encryptor_controller, login_controller
 
 
 class MainWindowController(Ui_MainWindow):
     def __init__(self):
         self.productListWidget = QListWidget()
 
+        if not utils.is_authenticated():
+            dialog = QDialog()
+            login_dialog = login_controller.LoginController()
+            login_dialog.setupUi(dialog)
+            dialog.exec()
+
     def setupUi(self, MainWindow):
+        if not utils.is_authenticated():
+            sys.exit(0)
         super().setupUi(MainWindow)
         self.selectFilesButton.clicked.connect(self.open_file_dialog)
         self.selectFolderButton.clicked.connect(self.open_folder_dialog)
