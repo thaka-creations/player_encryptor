@@ -1,10 +1,10 @@
 import sys
 from PyQt5 import QtWidgets
 
-from controllers import main_controllers
+from controllers import main_controller
 
 
-class MainWindow(QtWidgets.QMainWindow, main_controllers.MainWindowController):
+class MainWindow(QtWidgets.QMainWindow, main_controller.MainWindowController):
     def __init__(self, *args, obj=None, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.setupUi(self)

@@ -1,7 +1,7 @@
 import utils
 import sys
 from PyQt5.QtCore import QDir
-from PyQt5.QtWidgets import QFileDialog, QLabel, QPushButton, QListWidget, QDialog
+from PyQt5.QtWidgets import QFileDialog, QLabel, QPushButton, QListWidget, QDialog, QMessageBox
 from main_ui import Ui_MainWindow
 from controllers import encryptor_controller, login_controller
 
@@ -91,6 +91,19 @@ class MainWindowController(Ui_MainWindow):
                 self.altWidgetLayout.addWidget(errorLabel)
                 self.altWidgetLayout.addWidget(errorLabel)
 
+    def display_message(self, status_code, message):
+        message_box = QMessageBox()
+        message_box.setWindowTitle(status_code)
+        message_box.setText(message)
+        message_box.setStandardButtons(QMessageBox.Ok)
+
+        if status_code == "Success":
+            message_box.setIcon(QMessageBox.Information)
+        else:
+            message_box.setIcon(QMessageBox.Warning)
+
+        message_box.exec_()
+
     def create_select_product(self):
         if self.createSelectProductButton.text() == "Create or Select Product":
             layouts = [self.homeHorizontalLayout, self.altWidgetLayout]
@@ -105,9 +118,11 @@ class MainWindowController(Ui_MainWindow):
                 for product in response:
                     self.productListWidget.addItem(f"{product['id']}  {product['name'].title()}")
                 self.altWidgetLayout.addWidget(self.productListWidget)
-
-            self.createSelectProductButton.setText("Select Product")
-            self.homeHorizontalLayout.addWidget(newProductButton)
+                self.createSelectProductButton.setText("Select Product")
+                self.homeHorizontalLayout.addWidget(newProductButton)
+            else:
+                self.display_message("Error", response)
+                return
         else:
             selectedProduct = self.productListWidget.currentItem().text()
             self.homeVerticalLayout.removeWidget(self.homeMainWidget)
