@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1440</width>
-    <height>900</height>
+    <width>1920</width>
+    <height>1080</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,7 +31,7 @@
    <property name="styleSheet">
     <string notr="true"/>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>-28</x>
@@ -164,16 +164,12 @@ background: #5968B0;</string>
         <string notr="true">color: black;
 background: white;</string>
        </property>
-       <item>
-        <property name="text">
-         <string>test</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>testing this</string>
-        </property>
-       </item>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
       </widget>
      </item>
      <item>
