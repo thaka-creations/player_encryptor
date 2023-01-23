@@ -1,8 +1,9 @@
 import requests
+from settings import BASE_URL
 
 
 def register_user(payload):
-    url = "http://localhost:8000/api/v1/users/register"
+    url = f"{BASE_URL}/api/v1/users/register"
     response = requests.post(url, json=payload)
     try:
         if response.status_code == 200:
@@ -14,7 +15,7 @@ def register_user(payload):
 
 
 def verify_otp(payload):
-    url = "http://localhost:8000/api/v1/users/verify-otp"
+    url = f"{BASE_URL}/api/v1/users/verify-otp"
     response = requests.post(url, json=payload)
     try:
         if response.status_code == 200:
@@ -26,7 +27,7 @@ def verify_otp(payload):
 
 
 def resend_otp(payload):
-    url = "http://localhost:8000/api/v1/users/resend-otp"
+    url = f"{BASE_URL}/api/v1/users/resend-otp"
     response = requests.post(url, json=payload)
     try:
         if response.status_code == 200:

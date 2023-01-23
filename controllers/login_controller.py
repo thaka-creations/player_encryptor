@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QMessageBox, QDialog, QPushButton
 
 import utils
 import user_utils
+from settings import BASE_URL
 from login_ui import Ui_loginDialog
 from controllers import registration_controller, verify_otp_controller
 
@@ -62,7 +63,7 @@ class LoginController(Ui_loginDialog):
             self.display_message("Error", "Please enter a username and password")
             return
 
-        url = "http://localhost:8000/api/v1/users/auth/login"
+        url = f"{BASE_URL}/api/v1/users/auth/login"
         try:
             response = requests.post(url=url, json={"username": username, "password": password}, timeout=5)
             if response.status_code == 200:

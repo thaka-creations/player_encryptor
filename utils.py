@@ -8,6 +8,7 @@ import hashlib
 import platform
 import subprocess
 import plistlib
+from settings import BASE_URL
 from cryptography.fernet import Fernet
 
 
@@ -45,7 +46,7 @@ def is_authenticated():
 
 
 def list_products():
-    url = "http://localhost:8000/api/v1/products"
+    url = f"{BASE_URL}/api/v1/products"
     headers = retrieve_headers()
     try:
         response = requests.get(url, headers=headers)
@@ -114,7 +115,7 @@ def write_file(contents):
 
 def retrieve_product(request_id):
     request_id = request_id.split(" ")[0]
-    url = f"http://localhost:8000/api/v1/products/{request_id}"
+    url = f"{BASE_URL}/api/v1/products/{request_id}"
     try:
         response = requests.get(url)
         return True, response.json()['encryption_key']
@@ -128,7 +129,7 @@ def send_encrypted_files(product_id):
     with open("properties.json", "r") as f:
         file_list = json.load(f)
 
-    url = "http://localhost:8000/api/v1/videos/add-video"
+    url = f"{BASE_URL}/api/v1/videos/add-video"
     payload = {"product": product_id, "file_list": file_list}
     response = requests.post(url, json=payload)
 
@@ -221,7 +222,7 @@ def get_model_mame():
 
 
 def app_registered():
-    url = "http://localhost:8000/api/v1/videos/app-registered"
+    url = f"{BASE_URL}/api/v1/videos/app-registered"
     payload = {"serial_number": get_serial_number(), "model_name": get_model_mame(), "encryptor": True}
     response = requests.post(url, json=payload)
 

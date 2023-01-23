@@ -20,11 +20,17 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="maximumSize">
     <size>
      <width>16777215</width>
      <height>16777215</height>
     </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">width: 100%;</string>
    </property>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
@@ -32,7 +38,7 @@
       <x>0</x>
       <y>0</y>
       <width>1441</width>
-      <height>821</height>
+      <height>841</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -41,8 +47,37 @@
        <property name="enabled">
         <bool>true</bool>
        </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::DefaultContextMenu</enum>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
        <property name="styleSheet">
-        <string notr="true"/>
+        <string notr="true">width: 100%;
+background: white;
+color: black;</string>
        </property>
        <property name="tabShape">
         <enum>QTabWidget::Rounded</enum>
@@ -60,6 +95,9 @@
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="1" column="0">
           <widget class="QStackedWidget" name="stackedWidget">
+           <property name="styleSheet">
+            <string notr="true">width: 100%;</string>
+           </property>
            <property name="currentIndex">
             <number>0</number>
            </property>
@@ -70,7 +108,7 @@
                <x>5</x>
                <y>0</y>
                <width>1391</width>
-               <height>751</height>
+               <height>761</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout">
