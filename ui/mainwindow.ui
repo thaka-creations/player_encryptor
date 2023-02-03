@@ -38,17 +38,23 @@
       <x>0</x>
       <y>0</y>
       <width>1441</width>
-      <height>841</height>
+      <height>891</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_6">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetNoConstraint</enum>
+     </property>
      <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="enabled">
         <bool>true</bool>
        </property>
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -92,325 +98,338 @@ color: black;</string>
         <attribute name="title">
          <string>HOME</string>
         </attribute>
-        <layout class="QGridLayout" name="gridLayout_3">
-         <item row="1" column="0">
-          <widget class="QStackedWidget" name="stackedWidget">
-           <property name="styleSheet">
-            <string notr="true">width: 100%;</string>
+        <widget class="QStackedWidget" name="stackedWidget">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>1431</width>
+           <height>831</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">width: 100%;</string>
+         </property>
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="page_3">
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="sizeConstraint">
+              <enum>QLayout::SetNoConstraint</enum>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QFrame" name="frame">
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QGridLayout" name="gridLayout">
+                <item row="0" column="0">
+                 <layout class="QHBoxLayout" name="horizontalLayout">
+                  <item>
+                   <widget class="QPushButton" name="selectFilesButton">
+                    <property name="cursor">
+                     <cursorShape>PointingHandCursor</cursorShape>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background: #5968B0;
+color: white;</string>
+                    </property>
+                    <property name="text">
+                     <string>Select Files</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="selectFolderButton">
+                    <property name="cursor">
+                     <cursorShape>PointingHandCursor</cursorShape>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background: #5968B0;
+color: white;</string>
+                    </property>
+                    <property name="text">
+                     <string>Select Folder</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="clearFilesButton">
+                    <property name="cursor">
+                     <cursorShape>PointingHandCursor</cursorShape>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background: #5968B0;
+color: white;</string>
+                    </property>
+                    <property name="text">
+                     <string>Clear Files</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QListWidget" name="fileFolderListWidget">
+               <property name="styleSheet">
+                <string notr="true">color: #5968B0;
+background: white;</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="createSelectButton">
+               <property name="styleSheet">
+                <string notr="true">background: #5968B0;
+color: white;</string>
+               </property>
+               <property name="text">
+                <string>Create or Select Product</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_4">
+          <widget class="QWidget" name="layoutWidget">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>1391</width>
+             <height>761</height>
+            </rect>
            </property>
-           <property name="currentIndex">
-            <number>0</number>
-           </property>
-           <widget class="QWidget" name="page_3">
-            <widget class="QWidget" name="layoutWidget">
-             <property name="geometry">
-              <rect>
-               <x>5</x>
-               <y>0</y>
-               <width>1391</width>
-               <height>761</height>
-              </rect>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout">
-              <item>
-               <widget class="QFrame" name="frame">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QGridLayout" name="gridLayout">
-                 <item row="0" column="0">
-                  <layout class="QHBoxLayout" name="horizontalLayout">
-                   <item>
-                    <widget class="QPushButton" name="selectFilesButton">
-                     <property name="cursor">
-                      <cursorShape>PointingHandCursor</cursorShape>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">background: #5968B0;
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <widget class="QWidget" name="widget" native="true">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <widget class="QPushButton" name="backButton">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>10</y>
+                 <width>113</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Arial</family>
+                 <pointsize>14</pointsize>
+                </font>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background: #5968B0;
 color: white;</string>
-                     </property>
-                     <property name="text">
-                      <string>Select Files</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="selectFolderButton">
-                     <property name="cursor">
-                      <cursorShape>PointingHandCursor</cursorShape>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">background: #5968B0;
+               </property>
+               <property name="text">
+                <string>BACK</string>
+               </property>
+              </widget>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="newProductButton">
+              <property name="styleSheet">
+               <string notr="true">background: #5968B0;
 color: white;</string>
-                     </property>
-                     <property name="text">
-                      <string>Select Folder</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="clearFilesButton">
-                     <property name="cursor">
-                      <cursorShape>PointingHandCursor</cursorShape>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">background: #5968B0;
-color: white;</string>
-                     </property>
-                     <property name="text">
-                      <string>Clear Files</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item>
-               <widget class="QListWidget" name="fileFolderListWidget">
-                <property name="styleSheet">
-                 <string notr="true">color: #5968B0;
+              </property>
+              <property name="text">
+               <string>New Product</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QListWidget" name="productListWidget">
+              <property name="styleSheet">
+               <string notr="true">color: #5968B0;
 background: white;</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="createSelectButton">
-                <property name="styleSheet">
-                 <string notr="true">background: #5968B0;
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="selectProductButton">
+              <property name="styleSheet">
+               <string notr="true">background: #5968B0;
 color: white;</string>
-                </property>
-                <property name="text">
-                 <string>Create or Select Product</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </widget>
-           <widget class="QWidget" name="page_4">
-            <widget class="QWidget" name="layoutWidget">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>1391</width>
-               <height>761</height>
-              </rect>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_3">
-              <item>
-               <widget class="QWidget" name="widget" native="true">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <widget class="QPushButton" name="backButton">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>10</y>
-                   <width>113</width>
-                   <height>21</height>
-                  </rect>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <family>Arial</family>
-                   <pointsize>14</pointsize>
-                  </font>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">background: #5968B0;
-color: white;</string>
-                 </property>
-                 <property name="text">
-                  <string>BACK</string>
-                 </property>
-                </widget>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="newProductButton">
-                <property name="styleSheet">
-                 <string notr="true">background: #5968B0;
-color: white;</string>
-                </property>
-                <property name="text">
-                 <string>New Product</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QListWidget" name="productListWidget">
-                <property name="styleSheet">
-                 <string notr="true">color: #5968B0;
-background: white;</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="selectProductButton">
-                <property name="styleSheet">
-                 <string notr="true">background: #5968B0;
-color: white;</string>
-                </property>
-                <property name="text">
-                 <string>Select Product</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </widget>
-           <widget class="QWidget" name="page_5">
-            <widget class="QWidget" name="layoutWidget">
-             <property name="geometry">
-              <rect>
-               <x>20</x>
-               <y>-1</y>
-               <width>1371</width>
-               <height>761</height>
-              </rect>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_5">
-              <item>
-               <widget class="QWidget" name="widget_2" native="true">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <widget class="QPushButton" name="backButton2">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>10</y>
-                   <width>113</width>
-                   <height>21</height>
-                  </rect>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>0</height>
-                  </size>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <family>Arial</family>
-                   <pointsize>14</pointsize>
-                  </font>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">background: #5968B0;
-color: white;</string>
-                 </property>
-                 <property name="text">
-                  <string>BACK</string>
-                 </property>
-                </widget>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="productLabel">
-                <property name="styleSheet">
-                 <string notr="true">color: #5968B0;</string>
-                </property>
-                <property name="text">
-                 <string>Header</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QListWidget" name="encryptorListWidget">
-                <property name="styleSheet">
-                 <string notr="true">color: #5968B0;
-background: white;</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QFrame" name="frame_4">
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QGridLayout" name="gridLayout_4">
-                 <item row="0" column="0">
-                  <layout class="QVBoxLayout" name="verticalLayout_4">
-                   <item>
-                    <widget class="QPushButton" name="changeContentButton">
-                     <property name="styleSheet">
-                      <string notr="true">background: #5968B0;
-color: white;</string>
-                     </property>
-                     <property name="text">
-                      <string>CHANGE CONTENT</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="outputDirectoryButton">
-                     <property name="styleSheet">
-                      <string notr="true">background: #5968B0;
-color: white;</string>
-                     </property>
-                     <property name="text">
-                      <string>OUTPUT DIRECTORY</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="outputDirectoryLabel">
-                     <property name="text">
-                      <string>Output Directory: </string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="startEncryptionButton">
-                     <property name="styleSheet">
-                      <string notr="true">background: #5968B0;
-color: white;</string>
-                     </property>
-                     <property name="text">
-                      <string>START ENCRYPTION</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </widget>
+              </property>
+              <property name="text">
+               <string>Select Product</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
-         </item>
-        </layout>
+         </widget>
+         <widget class="QWidget" name="page_5">
+          <widget class="QWidget" name="layoutWidget">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>-1</y>
+             <width>1371</width>
+             <height>761</height>
+            </rect>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <widget class="QWidget" name="widget_2" native="true">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <widget class="QPushButton" name="backButton2">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>10</y>
+                 <width>113</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Arial</family>
+                 <pointsize>14</pointsize>
+                </font>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background: #5968B0;
+color: white;</string>
+               </property>
+               <property name="text">
+                <string>BACK</string>
+               </property>
+              </widget>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="productLabel">
+              <property name="styleSheet">
+               <string notr="true">color: #5968B0;</string>
+              </property>
+              <property name="text">
+               <string>Header</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QListWidget" name="encryptorListWidget">
+              <property name="styleSheet">
+               <string notr="true">color: #5968B0;
+background: white;</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QFrame" name="frame_4">
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_4">
+               <item row="0" column="0">
+                <layout class="QVBoxLayout" name="verticalLayout_4">
+                 <item>
+                  <widget class="QPushButton" name="changeContentButton">
+                   <property name="styleSheet">
+                    <string notr="true">background: #5968B0;
+color: white;</string>
+                   </property>
+                   <property name="text">
+                    <string>CHANGE CONTENT</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="outputDirectoryButton">
+                   <property name="styleSheet">
+                    <string notr="true">background: #5968B0;
+color: white;</string>
+                   </property>
+                   <property name="text">
+                    <string>OUTPUT DIRECTORY</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="outputDirectoryLabel">
+                   <property name="text">
+                    <string>Output Directory: </string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="startEncryptionButton">
+                   <property name="styleSheet">
+                    <string notr="true">background: #5968B0;
+color: white;</string>
+                   </property>
+                   <property name="text">
+                    <string>START ENCRYPTION</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </widget>
        </widget>
        <widget class="QWidget" name="profileTab">
         <attribute name="title">
@@ -433,11 +452,10 @@ color: white;</string>
      <x>0</x>
      <y>0</y>
      <width>1440</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
     <string>toolBar</string>

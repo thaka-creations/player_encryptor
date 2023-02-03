@@ -3,7 +3,7 @@ import sys
 import pickle
 from cryptography.fernet import Fernet
 from PyQt5.QtCore import QDir
-from PyQt5.QtWidgets import QFileDialog, QMessageBox, QPushButton, QWidget, QDialog, QVBoxLayout
+from PyQt5.QtWidgets import QFileDialog, QMessageBox, QPushButton, QWidget, QDialog, QVBoxLayout, QApplication
 from main_window import Ui_MainWindow
 from controllers import login_controller
 
@@ -37,6 +37,21 @@ class MainWindowController(Ui_MainWindow):
         self.startEncryptionButton.clicked.connect(self.encrypt_files)
         self.backButton2.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(1))
         self.changeContentButton.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(0))
+    #
+    # def moveEvent(self, event):
+    #     oldScreen = QApplication.screenAt(event.oldPos())
+    #     newScreen = QApplication.screenAt(event.pos())
+    #
+    #     if oldScreen != newScreen:
+    #         available_geometry = newScreen.availableGeometry()
+    #         self.tabWidget.setFixedSize(available_geometry.width(), available_geometry.height())
+    #     return self.moveEvent(event)
+
+    def resizeEvent(self, event):
+        # get resized window dimensions
+        self.stackedWidget_2.setFixedSize(event.size().width(), event.size().height())
+        # self.stackedWidget.setFixedHeight(event.size().height() - 10)
+        return self.resizeEvent(event)
 
     def open_file_dialog(self):
         file_dialog = QFileDialog()
