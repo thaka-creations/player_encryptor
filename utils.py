@@ -37,11 +37,25 @@ def retrieve_headers():
         return False
 
 
+# delete headers
+def delete_headers():
+    if keyring.get_password("tafa_encryptor", "authorization"):
+        keyring.delete_password("tafa_encryptor", "authorization")
+        keyring.delete_password("tafa_encryptor", "jwtauth")
+        keyring.delete_password("tafa_encryptor", "refresh_token")
+
+
 # check if user is authenticated
 def is_authenticated():
     authenticated_user = retrieve_headers()
     if isinstance(authenticated_user, dict):
-        return True
+        # check if headers are valid
+        url = f"{BASE_URL}/api/v1/users/account/user-details"
+        response = requests.get(url, headers=authenticated_user)
+        if response.status_code == 200:
+            return True
+        else:
+            return False
     return False
 
 

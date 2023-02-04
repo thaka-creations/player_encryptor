@@ -1,6 +1,7 @@
 import utils
 import sys
 import pickle
+import user_utils
 from cryptography.fernet import Fernet
 from PyQt5.QtCore import QDir
 from PyQt5.QtWidgets import QFileDialog, QMessageBox, QPushButton, QWidget, QDialog, QVBoxLayout, QApplication
@@ -21,7 +22,7 @@ class MainWindowController(Ui_MainWindow):
         if not utils.is_authenticated():
             sys.exit(0)
         super().setupUi(MainWindow)
-
+        self.MainWindow = MainWindow
         # home first view
         self.selectFilesButton.clicked.connect(self.open_file_dialog)
         self.selectFolderButton.clicked.connect(self.open_folder_dialog)
@@ -37,21 +38,70 @@ class MainWindowController(Ui_MainWindow):
         self.startEncryptionButton.clicked.connect(self.encrypt_files)
         self.backButton2.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(1))
         self.changeContentButton.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(0))
-    #
-    # def moveEvent(self, event):
-    #     oldScreen = QApplication.screenAt(event.oldPos())
-    #     newScreen = QApplication.screenAt(event.pos())
-    #
-    #     if oldScreen != newScreen:
-    #         available_geometry = newScreen.availableGeometry()
-    #         self.tabWidget.setFixedSize(available_geometry.width(), available_geometry.height())
-    #     return self.moveEvent(event)
+
+        # navigator
+        self.homeButton.clicked.connect(self.navigate_to_home)
+        self.homeButton_2.clicked.connect(self.navigate_to_home)
+        self.homeButton_3.clicked.connect(self.navigate_to_home)
+        self.profileButton.clicked.connect(self.navigate_to_profile)
+        self.profileButton_2.clicked.connect(self.navigate_to_profile)
+        self.profileButton_3.clicked.connect(self.navigate_to_profile)
+        self.aboutButton.clicked.connect(self.navigate_to_about)
+        self.aboutButton_2.clicked.connect(self.navigate_to_about)
+        self.aboutButton_3.clicked.connect(self.navigate_to_about)
+
+        # logout
+        self.logoutButton.clicked.connect(self.logout)
 
     def resizeEvent(self, event):
         # get resized window dimensions
         self.stackedWidget_2.setFixedSize(event.size().width(), event.size().height())
         # self.stackedWidget.setFixedHeight(event.size().height() - 10)
         return self.resizeEvent(event)
+
+    def redirect_to_login(self):
+        # close main window
+        self.stackedWidget_2.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(0)
+        self.MainWindow.close()
+
+        # del headers
+        utils.delete_headers()
+
+        # open login dialog
+        dialog = QDialog()
+        login_dialog = login_controller.LoginController(self.MainWindow)
+        login_dialog.setupUi(dialog)
+        self.homeWidget = None
+        dialog.exec()
+
+    def navigate_to_home(self):
+        self.stackedWidget_2.setCurrentIndex(0)
+
+    def navigate_to_profile(self):
+        # retrieve logged in user details
+        status_code, message = user_utils.user_details()
+        if not status_code:
+            if message == "403":
+                self.redirect_to_login()
+            else:
+                self.display_message("Error", message)
+        else:
+            self.nameProfileLabel.setText(f'NAME: {message["name"]}')
+            self.emailProfileLabel.setText(f'EMAIL: {message["username"]}')
+            self.phoneProfileLabel.setText(f'PHONE: {message["phone"]}')
+            self.stackedWidget_2.setCurrentIndex(1)
+
+    def navigate_to_about(self):
+        self.stackedWidget_2.setCurrentIndex(2)
+
+    def logout(self):
+        status_code, message = user_utils.logout()
+        if status_code:
+            self.display_message("Success", message)
+            self.redirect_to_login()
+        else:
+            self.display_message("Error", message)
 
     def open_file_dialog(self):
         file_dialog = QFileDialog()

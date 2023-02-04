@@ -20,9 +20,10 @@ def error_display():
 
 
 class LoginController(Ui_loginDialog):
-    def __init__(self):
+    def __init__(self, main_window=None):
         self.closeDialog = QPushButton()
         self.user = None
+        self.main_window = main_window
 
     def setupUi(self, loginDialog):
         super().setupUi(loginDialog)
@@ -79,6 +80,10 @@ class LoginController(Ui_loginDialog):
                         error_display()
                     utils.store_headers(auth, jwtauth, refresh_token)
                     self.closeDialog.click()
+
+                    if self.main_window:
+                        self.main_window.show()
+
                 except KeyError:
                     self.display_message("Error", "Invalid response from server")
                     return
