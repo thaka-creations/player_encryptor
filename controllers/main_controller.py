@@ -207,6 +207,7 @@ class MainWindowController(Ui_MainWindow):
                 original = file.read()
 
             file_name = i['name']
+            new_file_name = f"{file_name.split('.')[0]}.tafa"
             file_id = i['video_id'].encode()
             encrypted = fernet.encrypt(original)
 
@@ -214,7 +215,7 @@ class MainWindowController(Ui_MainWindow):
             packed_data = pickle.dumps((file_id, encrypted))
 
             # output the encrypted file
-            with open(f"{output_directory}/{file_name}", "wb") as f:
+            with open(f"{output_directory}/{new_file_name}", "wb") as f:
                 f.write(packed_data)
 
         self.display_message("Success", "Encryption Completed Successfully")
