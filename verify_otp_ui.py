@@ -17,7 +17,7 @@ class Ui_verifyOtpForm(object):
         verifyOtpForm.resize(600, 300)
         verifyOtpForm.setMaximumSize(QtCore.QSize(600, 300))
         self.verticalLayoutWidget = QtWidgets.QWidget(verifyOtpForm)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 591, 331))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(0, 0, 601, 331))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
@@ -28,10 +28,10 @@ class Ui_verifyOtpForm(object):
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
         self.otpCodeInput = QtWidgets.QLineEdit(self.frame)
-        self.otpCodeInput.setGeometry(QtCore.QRect(60, 140, 291, 41))
+        self.otpCodeInput.setGeometry(QtCore.QRect(60, 120, 291, 41))
         font = QtGui.QFont()
-        font.setFamily("Comic Sans MS")
-        font.setPointSize(24)
+        font.setFamily("Microsoft Sans Serif")
+        font.setPointSize(15)
         self.otpCodeInput.setFont(font)
         self.otpCodeInput.setStyleSheet("border-radius: 5px;\n"
 "border: 1px solid gray;\n"
@@ -40,10 +40,10 @@ class Ui_verifyOtpForm(object):
         self.otpCodeInput.setText("")
         self.otpCodeInput.setObjectName("otpCodeInput")
         self.verifyOtpButton = QtWidgets.QPushButton(self.frame)
-        self.verifyOtpButton.setGeometry(QtCore.QRect(50, 240, 481, 41))
+        self.verifyOtpButton.setGeometry(QtCore.QRect(50, 230, 481, 41))
         font = QtGui.QFont()
-        font.setFamily("Comic Sans MS")
-        font.setPointSize(24)
+        font.setFamily("Microsoft Sans Serif")
+        font.setPointSize(15)
         self.verifyOtpButton.setFont(font)
         self.verifyOtpButton.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.verifyOtpButton.setStyleSheet("background: #5968B0;\n"
@@ -52,10 +52,10 @@ class Ui_verifyOtpForm(object):
 "border-radius:5px;")
         self.verifyOtpButton.setObjectName("verifyOtpButton")
         self.resendOtpButton = QtWidgets.QPushButton(self.frame)
-        self.resendOtpButton.setGeometry(QtCore.QRect(370, 140, 171, 41))
+        self.resendOtpButton.setGeometry(QtCore.QRect(370, 120, 171, 41))
         font = QtGui.QFont()
-        font.setFamily("Comic Sans MS")
-        font.setPointSize(24)
+        font.setFamily("Microsoft Sans Serif")
+        font.setPointSize(15)
         self.resendOtpButton.setFont(font)
         self.resendOtpButton.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.resendOtpButton.setStyleSheet("background: #5968B0;\n"
@@ -64,12 +64,19 @@ class Ui_verifyOtpForm(object):
 "border-radius: 5px;")
         self.resendOtpButton.setObjectName("resendOtpButton")
         self.label = QtWidgets.QLabel(self.frame)
-        self.label.setGeometry(QtCore.QRect(20, 30, 561, 41))
-        self.label.setStyleSheet("font: 54pt \"Chalkduster\";\n"
-"color: #5968B0;")
+        self.label.setGeometry(QtCore.QRect(20, 20, 561, 41))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft Sans Serif")
+        font.setPointSize(24)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.label.setFont(font)
+        self.label.setStyleSheet("color: #5968B0;")
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.frame_2 = QtWidgets.QFrame(self.frame)
-        self.frame_2.setGeometry(QtCore.QRect(39, 99, 511, 121))
+        self.frame_2.setGeometry(QtCore.QRect(39, 80, 511, 121))
         self.frame_2.setStyleSheet("border: 1px solid gray;\n"
 "border-radius: 10px;\n"
 "")
@@ -88,7 +95,7 @@ class Ui_verifyOtpForm(object):
 
     def retranslateUi(self, verifyOtpForm):
         _translate = QtCore.QCoreApplication.translate
-        verifyOtpForm.setWindowTitle(_translate("verifyOtpForm", "Tafa Player Verify Otp"))
+        verifyOtpForm.setWindowTitle(_translate("verifyOtpForm", "Tafa Encryptor Verify Otp"))
         self.otpCodeInput.setPlaceholderText(_translate("verifyOtpForm", "OTP CODE"))
         self.verifyOtpButton.setText(_translate("verifyOtpForm", "VERIFY OTP"))
         self.resendOtpButton.setText(_translate("verifyOtpForm", "RESEND OTP"))

@@ -13,6 +13,7 @@ class RegistrationController(Ui_registrationForm):
     def setupUi(self, registrationForm):
         super().setupUi(registrationForm)
         self.registerUserButton.clicked.connect(self.register_user)
+        self.redirectToLoginButton.clicked.connect(self.redirect_to_login)
         self.closeDialog.clicked.connect(registrationForm.close)
 
     def display_message(self, status_code, message):
@@ -36,6 +37,14 @@ class RegistrationController(Ui_registrationForm):
         verifyOtpController = verify_otp_controller.VerifyOtpController(self.user)
         verifyOtpController.setupUi(verifyOtpDialog)
         verifyOtpDialog.exec_()
+
+    def redirect_to_login(self):
+        from controllers.login_controller import LoginController
+        self.closeDialog.click()
+        loginDialog = QDialog()
+        loginController = LoginController()
+        loginController.setupUi(loginDialog)
+        loginDialog.exec_()
 
     def register_user(self):
         first_name = self.firstNameInput.text()

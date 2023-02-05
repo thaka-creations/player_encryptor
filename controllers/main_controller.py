@@ -4,13 +4,14 @@ import pickle
 import user_utils
 from cryptography.fernet import Fernet
 from PyQt5.QtCore import QDir
-from PyQt5.QtWidgets import QFileDialog, QMessageBox, QPushButton, QWidget, QDialog, QVBoxLayout, QApplication
-from main_window import Ui_MainWindow
+from PyQt5.QtWidgets import QFileDialog, QMessageBox, QDialog
+from main_window import Ui_TafaEncryptor
 from controllers import login_controller
 
 
-class MainWindowController(Ui_MainWindow):
+class MainWindowController(Ui_TafaEncryptor):
     def __init__(self):
+        self.MainWindow = None
         if not utils.is_authenticated():
             dialog = QDialog()
             login_dialog = login_controller.LoginController()
@@ -263,4 +264,3 @@ class MainWindowController(Ui_MainWindow):
             message_box.setIcon(QMessageBox.Warning)
 
         message_box.exec_()
-
