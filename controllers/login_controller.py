@@ -59,6 +59,7 @@ class LoginController(Ui_loginDialog):
     def login(self):
         username = self.usernameEdit.text()
         password = self.passwordEdit.text()
+        usertype = "staff"
 
         if not username or not password:
             self.display_message("Error", "Please enter a username and password")
@@ -66,7 +67,8 @@ class LoginController(Ui_loginDialog):
 
         url = f"{BASE_URL}/api/v1/users/auth/login"
         try:
-            response = requests.post(url=url, json={"username": username, "password": password}, timeout=5)
+            response = requests.post(url=url, json={"username": username, "password": password,
+                                                    "usertype": usertype}, timeout=5)
             if response.status_code == 200:
                 # The login request was successful, so accept the dialog and close it
                 try:
