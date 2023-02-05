@@ -56,6 +56,7 @@ class MainWindowController(Ui_MainWindow):
         # new product
         self.newProductButton.clicked.connect(self.navigate_to_new_product)
         self.addProductButton.clicked.connect(self.add_product)
+        self.backButton3.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(1))
 
     def resizeEvent(self, event):
         # get resized window dimensions
