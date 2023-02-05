@@ -1,6 +1,2 @@
-import os
-from dotenv import load_dotenv
-load_dotenv()
-
-BASE_URL = os.environ.get("BASE_URL")
-TOKEN_KEY = os.environ.get("TOKEN_KEY")
+BASE_URL = "http://54.159.95.205"
+TOKEN_KEY = "p0m2ay76s&@sawdr8@4)x+7rl%ce6sb-1af)8v1f*5bs=e3%$)"
