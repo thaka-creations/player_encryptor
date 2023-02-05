@@ -23,7 +23,7 @@ class Ui_loginDialog(object):
         self.label.setMinimumSize(QtCore.QSize(700, 0))
         self.label.setMaximumSize(QtCore.QSize(700, 60))
         font = QtGui.QFont()
-        font.setPointSize(36)
+        font.setPointSize(24)
         self.label.setFont(font)
         self.label.setStyleSheet("color:#5968B0;")
         self.label.setAlignment(QtCore.Qt.AlignCenter)
