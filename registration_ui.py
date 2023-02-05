@@ -145,7 +145,7 @@ class Ui_registrationForm(object):
 
     def retranslateUi(self, registrationForm):
         _translate = QtCore.QCoreApplication.translate
-        registrationForm.setWindowTitle(_translate("registrationForm", "Dialog"))
+        registrationForm.setWindowTitle(_translate("registrationForm", "Tafa Encyrptor Registration"))
         self.label.setText(_translate("registrationForm", "TAFA ENCRYPTOR"))
         self.firstNameInput.setPlaceholderText(_translate("registrationForm", "First Name"))
         self.lastNameInput.setPlaceholderText(_translate("registrationForm", "Last Name"))
