@@ -68,7 +68,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(18)
         self.stackedWidget.setFont(font)
-        self.stackedWidget.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.stackedWidget.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.stackedWidget.setObjectName("stackedWidget")
         self.page = QtWidgets.QWidget()
         self.page.setObjectName("page")
@@ -243,6 +243,7 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(18)
         self.backButton3.setFont(font)
+        self.backButton3.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.backButton3.setStyleSheet("background: #5968B0;\n"
 "color: white;")
         self.backButton3.setObjectName("backButton3")

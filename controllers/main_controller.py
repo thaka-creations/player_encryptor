@@ -53,6 +53,10 @@ class MainWindowController(Ui_MainWindow):
         # logout
         self.logoutButton.clicked.connect(self.logout)
 
+        # new product
+        self.newProductButton.clicked.connect(self.navigate_to_new_product)
+        self.addProductButton.clicked.connect(self.add_product)
+
     def resizeEvent(self, event):
         # get resized window dimensions
         self.stackedWidget_2.setFixedSize(event.size().width(), event.size().height())
@@ -94,6 +98,30 @@ class MainWindowController(Ui_MainWindow):
 
     def navigate_to_about(self):
         self.stackedWidget_2.setCurrentIndex(2)
+
+    def navigate_to_new_product(self):
+        self.stackedWidget.setCurrentIndex(3)
+
+    def add_product(self):
+        # add product
+        payload = {
+            "name": self.nameEdit.text(),
+            "title": self.titleEdit.text(),
+            "short_description": self.shortDescriptionEdit.text(),
+            "long_description": self.longDescriptionEdit.toPlainText()
+        }
+        status_code, message = utils.add_product(payload)
+        if status_code:
+            self.display_message("Success", message)
+            self.nameEdit.clear()
+            self.titleEdit.clear()
+            self.shortDescriptionEdit.clear()
+            self.longDescriptionEdit.clear()
+        else:
+            if message == "403":
+                self.redirect_to_login()
+            else:
+                self.display_message("Error", message)
 
     def logout(self):
         status_code, message = user_utils.logout()

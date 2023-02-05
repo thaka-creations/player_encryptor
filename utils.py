@@ -137,6 +137,22 @@ def retrieve_product(request_id):
         return False, "Connection Error"
 
 
+# add product to server
+def add_product(payload):
+    headers = retrieve_headers()
+    url = f"{BASE_URL}/api/v1/products"
+    try:
+        response = requests.post(url, json=payload, headers=headers)
+        if response.status_code == 200:
+            return True, response.json()
+        elif response.status_code == 403:
+            return False, "403"
+        else:
+            return False, response.json()
+    except ConnectionError:
+        return False, "Connection Error"
+
+
 # send encrypted file to server
 def send_encrypted_files(product_id):
     product_id = product_id.split(" ")[0]
