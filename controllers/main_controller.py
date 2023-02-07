@@ -134,21 +134,23 @@ class MainWindowController(Ui_TafaEncryptor):
             self.display_message("Error", message)
 
     def open_file_dialog(self):
+        # select multiple files
         file_dialog = QFileDialog()
-        file_dialog.setFileMode(QFileDialog.ExistingFile)
+        file_dialog.setFileMode(QFileDialog.ExistingFiles)
         file_dialog.setWindowTitle("Select Video File")
         file_dialog.setNameFilter("Video Files (*.mp4 *.avi *.mkv)")
 
         if file_dialog.exec_():
             # get the selected file
-            file = file_dialog.selectedFiles()[0]
-            # extract the file name
-            file_name = file.split("/")[-1]
-            self.fileFolderListWidget.addItem(file_name)
-            self.fileFolderListWidget.addItem(file)
+            files = file_dialog.selectedFiles()
+            for file in files:
+                # extract the file name
+                file_name = file.split("/")[-1]
+                self.fileFolderListWidget.addItem(file_name)
+                self.fileFolderListWidget.addItem(file)
 
             # write file
-            utils.write_file(file)
+            utils.write_lines_to_file([file for file in files])
 
     def open_folder_dialog(self):
         folder_dialog = QFileDialog()

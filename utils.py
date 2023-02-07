@@ -8,7 +8,7 @@ import hashlib
 import platform
 import subprocess
 import plistlib
-from settings import BASE_URL
+from settings import BASE_URL, TOKEN_KEY
 from cryptography.fernet import Fernet
 
 
@@ -173,7 +173,7 @@ def send_encrypted_files(product_id):
 # check if application is genuine
 def is_app_genuine():
     # check if configuration file exists
-    if not os.path.exists("config.json"):
+    if not keyring.get_password("tafa_encryptor", "config"):
         # if user is authenticated, delete credentials
         response = retrieve_headers()
         if isinstance(response, dict):
@@ -183,13 +183,15 @@ def is_app_genuine():
     else:
         # decrypt configuration file
         # key is serial number
-        key = base64.urlsafe_b64encode(hashlib.sha256(get_serial_number().encode()).digest()[:32])
+        token = TOKEN_KEY
+        key = base64.urlsafe_b64encode(hashlib.sha256(token.encode()).digest()[:32])
         fernet = Fernet(key)
 
         try:
-            with open("config.json", "rb") as file:
-                encrypted_data = file.read()
-            decrypted_data = fernet.decrypt(encrypted_data)
+            encrypted_data = keyring.get_password("tafa_encryptor", "config")
+            # with open("config.json", "rb") as file:
+            #     encrypted_data = file.read()
+            decrypted_data = fernet.decrypt(encrypted_data.encode())
             return json.loads(decrypted_data)
         except Exception as e:
             print(e)
@@ -269,11 +271,11 @@ def app_registered():
 
             # write file
             conf = {"app": resp}
-            with open("config.json", "wb") as file:
-                key = base64.urlsafe_b64encode(hashlib.sha256(get_serial_number().encode()).digest()[:32])
-                fernet = Fernet(key)
-                encrypted_data = fernet.encrypt(json.dumps(conf).encode())
-                file.write(encrypted_data)
+            token = TOKEN_KEY
+            key = base64.urlsafe_b64encode(hashlib.sha256(token.encode()).digest()[:32])
+            fernet = Fernet(key)
+            encrypted_data = fernet.encrypt(json.dumps(conf).encode())
+            keyring.set_password("tafa_encryptor", "config", encrypted_data.decode())
             return True
         else:
             if resp != data['app']:
