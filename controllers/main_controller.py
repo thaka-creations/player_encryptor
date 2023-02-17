@@ -1,7 +1,5 @@
-import ctypes
-
+import os
 import utils
-import win32api
 import sys
 import user_utils
 from cryptography.fernet import Fernet
@@ -252,16 +250,18 @@ class MainWindowController(Ui_TafaEncryptor):
                     with open(f"{output_directory}/{new_file_name}", "ab") as f:
                         f.write(encrypted_chunk)
 
-                # set on os file attributes to file id
-                if sys.platform == "win32":
-                    # set file id as file attribute
-                    file_id = i['video_id']
-                    win32api.SetFileAttributes(f"{output_directory}/{new_file_name}", file_id)
+                # set file id as file attribute
+                file_id = i['video_id']
 
-                    # read file attribute
-                    file_id = win32api.GetFileAttributes(f"{output_directory}/{new_file_name}")
-                    print("File ID: ", file_id)
-                    print("video ID: ", i['video_id'])
+                # add file tag
+                file_tag = f"tafa_{file_id}"
+                os.system(f"fsutil file setfileinfo {output_directory}/{new_file_name} {file_tag}")
+
+                # retrieve file tag
+                file_tag = os.popen(f"fsutil file queryfileinfo {output_directory}/{new_file_name}").read()
+                print("file_tag", file_tag)
+                print("video_id", file_id)
+
 
         self.display_message("Success", "Encryption Completed Successfully")
         return
