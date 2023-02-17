@@ -1,4 +1,4 @@
-import os
+import pywin32
 import utils
 import sys
 import user_utils
@@ -252,15 +252,7 @@ class MainWindowController(Ui_TafaEncryptor):
 
                 # set file id as file attribute
                 file_id = i['video_id']
-
-                # add file tag
-                file_tag = f"tafa_{file_id}"
-                os.setxattr(f"{output_directory}/{new_file_name}", "file_id", file_tag.encode())
-
-                # read file attribute
-                file_id = os.getxattr(f"{output_directory}/{new_file_name}", "file_id")
-                print("video_id", i['video_id'])
-                print("file_id", file_id)
+                pywin32.win32file.SetFileTags(f"{output_directory}/{new_file_name}", file_id)
 
         self.display_message("Success", "Encryption Completed Successfully")
         return
