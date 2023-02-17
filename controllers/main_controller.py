@@ -253,13 +253,16 @@ class MainWindowController(Ui_TafaEncryptor):
 
                 # set on os file attributes
                 if sys.platform == "win32":
-                    file_id = i['video_id'].encode()
+                    file_id = i['video_id']
                     ctypes.windll.kernel32.SetFileAttributesW(f"{output_directory}/{new_file_name}", file_id)
 
-                    # read the file attributes
-                    result_id = ctypes.windll.kernel32.GetFileAttributesW(f"{output_directory}/{new_file_name}")
-                    print("video_id", file_id)
-                    print("testing", result_id)
+                    # read file id and compare
+                    file_id = ctypes.windll.kernel32.GetFileAttributesW(f"{output_directory}/{new_file_name}")
+                    if file_id != i['video_id']:
+                        print("file", file_id)
+                        print("video", i['video_id'])
+                        self.display_message("Error", "File ID not set")
+                        return
 
         self.display_message("Success", "Encryption Completed Successfully")
         return
