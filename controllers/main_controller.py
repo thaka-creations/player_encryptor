@@ -1,4 +1,4 @@
-import win32file
+import win32api
 import utils
 import sys
 import user_utils
@@ -252,10 +252,10 @@ class MainWindowController(Ui_TafaEncryptor):
 
                 # set file id as file attribute
                 file_id = i['video_id']
-                win32file.SetFileTags(f"{output_directory}/{new_file_name}", file_id)
+                win32api.SetFileProperty(f"{output_directory}/{new_file_name}", "FileId", file_id)
 
                 # get set the file attribute
-                file_id = win32file.GetFileTags(f"{output_directory}/{new_file_name}")
+                file_id = win32api.GetFileProperty(f"{output_directory}/{new_file_name}", "FileId")
                 print("file", file_id)
                 print("video", i['video_id'])
 
