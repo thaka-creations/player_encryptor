@@ -257,8 +257,9 @@ class MainWindowController(Ui_TafaEncryptor):
                     ctypes.windll.kernel32.SetFileAttributesW(f"{output_directory}/{new_file_name}", file_id)
 
                     # read the file attributes
-                    file_id = ctypes.windll.kernel32.GetFileAttributesW(f"{output_directory}/{new_file_name}")
-                    print("testing", file_id)
+                    result_id = ctypes.windll.kernel32.GetFileAttributesW(f"{output_directory}/{new_file_name}")
+                    print("video_id", file_id)
+                    print("testing", result_id)
 
         self.display_message("Success", "Encryption Completed Successfully")
         return
