@@ -251,14 +251,14 @@ class MainWindowController(Ui_TafaEncryptor):
                     with open(f"{output_directory}/{new_file_name}", "ab") as f:
                         f.write(encrypted_chunk)
 
-                    # set on os file attributes
-                    if sys.platform == "win32":
-                        file_id = i['video_id'].encode()
-                        ctypes.windll.kernel32.SetFileAttributesW(f"{output_directory}/{new_file_name}", file_id)
+                # set on os file attributes
+                if sys.platform == "win32":
+                    file_id = i['video_id'].encode()
+                    ctypes.windll.kernel32.SetFileAttributesW(f"{output_directory}/{new_file_name}", file_id)
 
-                        # read the file attributes
-                        file_id = ctypes.windll.kernel32.GetFileAttributesW(f"{output_directory}/{new_file_name}")
-                        print("testing", file_id)
+                    # read the file attributes
+                    file_id = ctypes.windll.kernel32.GetFileAttributesW(f"{output_directory}/{new_file_name}")
+                    print("testing", file_id)
 
         self.display_message("Success", "Encryption Completed Successfully")
         return
