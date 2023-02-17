@@ -234,7 +234,7 @@ class MainWindowController(Ui_TafaEncryptor):
             self.display_message("Error", response)
             return
 
-        chunk_size = 1024
+        chunk_size = 1024 * 1024  # 1MB
         for i in response:
             # read file in chunks
             file_name = i['name']
