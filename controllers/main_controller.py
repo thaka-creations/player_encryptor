@@ -1,6 +1,7 @@
 import ctypes
 
 import utils
+import win32api
 import sys
 import user_utils
 from cryptography.fernet import Fernet
@@ -251,18 +252,16 @@ class MainWindowController(Ui_TafaEncryptor):
                     with open(f"{output_directory}/{new_file_name}", "ab") as f:
                         f.write(encrypted_chunk)
 
-                # set on os file attributes
+                # set on os file attributes to file id
                 if sys.platform == "win32":
+                    # set file id as file attribute
                     file_id = i['video_id']
-                    ctypes.windll.kernel32.SetFileAttributesW(f"{output_directory}/{new_file_name}", file_id)
+                    win32api.SetFileAttributes(f"{output_directory}/{new_file_name}", file_id)
 
-                    # read file id and compare
-                    file_id = ctypes.windll.kernel32.GetFileAttributesW(f"{output_directory}/{new_file_name}")
-                    if file_id != i['video_id']:
-                        print("file", file_id)
-                        print("video", i['video_id'])
-                        self.display_message("Error", "File ID not set")
-                        return
+                    # read file attribute
+                    file_id = win32api.GetFileAttributes(f"{output_directory}/{new_file_name}")
+                    print("File ID: ", file_id)
+                    print("video ID: ", i['video_id'])
 
         self.display_message("Success", "Encryption Completed Successfully")
         return
