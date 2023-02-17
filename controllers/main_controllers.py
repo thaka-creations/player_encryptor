@@ -53,6 +53,7 @@ class MainWindowController(Ui_MainWindow):
 
             # write file
             utils.write_file(file)
+            print("testing writing single file")
 
             self.altWidgetLayout.addWidget(fileLabel)
             self.altWidgetLayout.addWidget(locationLabel)
@@ -83,6 +84,7 @@ class MainWindowController(Ui_MainWindow):
                     self.altWidgetLayout.addWidget(locationLabel)
 
                 # write file line by line
+                print("Writing files to file", [f"{folder}/{file}" for file in files])
                 utils.write_lines_to_file([f"{folder}/{file}" for file in files])
 
             else:

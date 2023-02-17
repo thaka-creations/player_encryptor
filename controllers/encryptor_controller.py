@@ -37,21 +37,35 @@ class EncryptorController(Ui_Encryptor):
             self.display_message("Error", response)
             return
 
+        chunk_size = 1024
         for i in response:
-            # encrypt the file
+            # read file in chunks
             with open(i['file_path'], "rb") as file:
-                original = file.read()
+                while True:
+                    chunk = file.read(chunk_size)
+                    if len(chunk) == 0:
+                        break
+                    # encrypt the chunk
+                    encrypted_chunk = fernet.encrypt(chunk)
 
-            file_name = i['name']
-            file_id = i['video_id'].encode()
-            encrypted = fernet.encrypt(original)
+                    # write the encrypted chunk
+                    with open(f"{output_directory}/{i['name']}", "ab") as f:
+                        f.write(encrypted_chunk)
 
-            # pack the tag and encrypted data into a single binary string
-            packed_data = pickle.dumps((file_id, encrypted))
-
-            # output the encrypted file
-            with open(f"{output_directory}/{file_name}", "wb") as f:
-                f.write(packed_data)
+            # # encrypt the file
+            # with open(i['file_path'], "rb") as file:
+            #     original = file.read()
+            #
+            # file_name = i['name']
+            # file_id = i['video_id'].encode()
+            # encrypted = fernet.encrypt(original)
+            #
+            # # pack the tag and encrypted data into a single binary string
+            # packed_data = pickle.dumps((file_id, encrypted))
+            #
+            # # output the encrypted file
+            # with open(f"{output_directory}/{file_name}", "wb") as f:
+            #     f.write(packed_data)
 
         self.display_message("Success", "Encryption Completed Successfully")
         return

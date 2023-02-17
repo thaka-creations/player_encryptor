@@ -1,6 +1,7 @@
+import ctypes
+
 import utils
 import sys
-import pickle
 import user_utils
 from cryptography.fernet import Fernet
 from PyQt5.QtCore import QDir
@@ -233,22 +234,27 @@ class MainWindowController(Ui_TafaEncryptor):
             self.display_message("Error", response)
             return
 
+        chunk_size = 1024
         for i in response:
-            # encrypt the file
-            with open(i['file_path'], "rb") as file:
-                original = file.read()
-
+            # read file in chunks
             file_name = i['name']
             new_file_name = f"{file_name.split('.')[0]}.tafa"
-            file_id = i['video_id'].encode()
-            encrypted = fernet.encrypt(original)
+            with open(i['file_path'], "rb") as file:
+                while True:
+                    chunk = file.read(chunk_size)
+                    if len(chunk) == 0:
+                        break
+                    # encrypt the chunk
+                    encrypted_chunk = fernet.encrypt(chunk)
 
-            # pack the tag and encrypted data into a single binary string
-            packed_data = pickle.dumps((file_id, encrypted))
+                    # write the encrypted chunk
+                    with open(f"{output_directory}/{new_file_name}", "ab") as f:
+                        f.write(encrypted_chunk)
 
-            # output the encrypted file
-            with open(f"{output_directory}/{new_file_name}", "wb") as f:
-                f.write(packed_data)
+                    # set on os file attributes
+                    if sys.platform == "win32":
+                        file_id = i['video_id'].encode()
+                        ctypes.windll.kernel32.SetFileAttributesW(f"{output_directory}/{new_file_name}", file_id)
 
         self.display_message("Success", "Encryption Completed Successfully")
         return

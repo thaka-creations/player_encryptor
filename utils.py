@@ -8,8 +8,13 @@ import hashlib
 import platform
 import subprocess
 import plistlib
+
+from PyQt5.QtCore import QSettings
+
 from settings import BASE_URL, TOKEN_KEY
 from cryptography.fernet import Fernet
+
+ss = QSettings("TafaEncryptor", "TafaEncryptor")
 
 
 # store headers using keyring
@@ -76,9 +81,8 @@ def list_products():
 
 def get_file_contents():
     # read file line by line
-    with open("file.txt", "r") as f:
-        lines = f.readlines()
-        return [line.strip() for line in lines]
+    file_contents = ss.value("file_contents")
+    return file_contents
 
 
 def write_file_properties(contents):
@@ -105,26 +109,20 @@ def write_file_properties(contents):
             "file_path": element
         })
 
-    with open("properties.json", "w") as f:
-        json.dump(file_list, f)
+    ss.setValue("file_properties", file_list)
+    # read file
+    print("file_list writing", ss.value("file_properties"))
 
 
 def write_lines_to_file(lines):
-    with open("file.txt", "w"
-              ) as f:
-        for element in lines:
-            f.write(str(element) + '\n')
-
-    # get file properties
-    write_file_properties(lines)
+    write_file(lines)
 
 
 def write_file(contents):
-    with open("file.txt", "w") as f:
-        f.write(contents)
+    ss.setValue("file_contents", contents)
 
     # get file properties
-    write_file_properties([contents])
+    write_file_properties(contents)
 
 
 def retrieve_product(request_id):
@@ -156,8 +154,8 @@ def add_product(payload):
 # send encrypted file to server
 def send_encrypted_files(product_id):
     product_id = product_id.split(" ")[0]
-    with open("properties.json", "r") as f:
-        file_list = json.load(f)
+    file_list = ss.value("file_properties")
+    print("file_list", file_list)
 
     url = f"{BASE_URL}/api/v1/videos/add-video"
     payload = {"product": product_id, "file_list": file_list}
@@ -166,7 +164,6 @@ def send_encrypted_files(product_id):
     if response.status_code == 200:
         return True, response.json()['message']
     else:
-        print(response.json()['message'])
         return False, "Files not sent to server. Try again later"
 
 
@@ -204,7 +201,6 @@ def get_mac_serial_number():
     output = subprocess.check_output(['system_profiler', 'SPHardwareDataType'])
     # Convert the output to a string and split it into lines
     lines = output.decode().split('\n')
-    print("lines", lines)
     # Iterate over the lines and find the line containing the serial number
     for line in lines:
         if 'Serial Number' in line:
