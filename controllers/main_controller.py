@@ -255,13 +255,12 @@ class MainWindowController(Ui_TafaEncryptor):
 
                 # add file tag
                 file_tag = f"tafa_{file_id}"
-                os.system(f"fsutil file setfileinfo {output_directory}/{new_file_name} {file_tag}")
+                os.setxattr(f"{output_directory}/{new_file_name}", "file_id", file_tag.encode())
 
-                # retrieve file tag
-                file_tag = os.popen(f"fsutil file queryfileinfo {output_directory}/{new_file_name}").read()
-                print("file_tag", file_tag)
-                print("video_id", file_id)
-
+                # read file attribute
+                file_id = os.getxattr(f"{output_directory}/{new_file_name}", "file_id")
+                print("video_id", i['video_id'])
+                print("file_id", file_id)
 
         self.display_message("Success", "Encryption Completed Successfully")
         return
