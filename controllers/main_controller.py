@@ -254,6 +254,13 @@ class MainWindowController(Ui_TafaEncryptor):
                 file_id = i['video_id']
                 win32file.SetFileTags(f"{output_directory}/{new_file_name}", file_id)
 
+                # get set the file attribute
+                file_id = win32file.GetFileTags(f"{output_directory}/{new_file_name}")
+                print("file", file_id)
+                print("video", i['video_id'])
+
+
+
         self.display_message("Success", "Encryption Completed Successfully")
         return
 
