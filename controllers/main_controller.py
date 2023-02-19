@@ -1,12 +1,22 @@
-import win32api
+import concurrent.futures
+import pickle
 import utils
 import sys
 import user_utils
 from cryptography.fernet import Fernet
-from PyQt5.QtCore import QDir
+from PyQt5.QtCore import QDir, QThread, QObject, pyqtSignal
 from PyQt5.QtWidgets import QFileDialog, QMessageBox, QDialog
 from main_window import Ui_TafaEncryptor
 from controllers import login_controller
+
+
+class Worker(QObject):
+    start_encryption = pyqtSignal()
+    finished = pyqtSignal()
+
+    def run(self):
+        # Start the event loop for the thread
+        self.exec_()
 
 
 class MainWindowController(Ui_TafaEncryptor):
@@ -18,6 +28,8 @@ class MainWindowController(Ui_TafaEncryptor):
             login_dialog.setupUi(dialog)
             self.homeWidget = None
             dialog.exec()
+        self.thread = QThread()
+        self.worker = Worker()
 
     def setupUi(self, MainWindow):
         if not utils.is_authenticated():
@@ -34,9 +46,15 @@ class MainWindowController(Ui_TafaEncryptor):
         self.selectProductButton.clicked.connect(self.select_product)
         self.backButton.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(0))
 
+        # threading
+        self.worker.moveToThread(self.thread)
+        self.worker.start_encryption.connect(self.encrypt_files)
+        self.thread.started.connect(self.worker.run)
+        self.worker.finished.connect(self.thread.quit)
+
         # encryptor view
         self.outputDirectoryButton.clicked.connect(self.output_directory_dialog)
-        self.startEncryptionButton.clicked.connect(self.encrypt_files)
+        self.startEncryptionButton.clicked.connect(self.worker.start_encryption.emit)
         self.backButton2.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(1))
         self.changeContentButton.clicked.connect(lambda: self.stackedWidget.setCurrentIndex(0))
 
@@ -213,6 +231,39 @@ class MainWindowController(Ui_TafaEncryptor):
         directory = QFileDialog.getExistingDirectory()
         self.outputDirectoryLabel.setText(f"Output Directory: {directory}")
 
+    @staticmethod
+    def file_encryptor(fernet, chunk_size, response, output_directory):
+        try:
+            for i in response:
+                # read file in chunks
+                file_name = i['name']
+                new_file_name = f"{file_name.split('.')[0]}.tafa"
+                file_contents = b""
+                with open(i['file_path'], "rb") as file:
+                    while True:
+                        chunk = file.read(chunk_size)
+                        if len(chunk) == 0:
+                            break
+
+                        # whole file
+
+                        file_contents += chunk
+
+                    # encrypt file contents
+                    encrypted_file_contents = fernet.encrypt(file_contents)
+                    file_id = i['video_id'].encode()
+                    packed_data = pickle.dumps((file_id, encrypted_file_contents))
+                    # write the encrypted file contents in chunks
+                    for k in range(0, len(packed_data), chunk_size):
+                        chunk = encrypted_file_contents[k:k + chunk_size]
+
+                        with open(f"{output_directory}/{new_file_name}", "ab") as f:
+                            f.write(chunk)
+            return True
+        except Exception as e:
+            print(e)
+            return False
+
     # encrypt the files
     def encrypt_files(self):
         request_id = self.productLabel.text().split(": ")[1]
@@ -233,36 +284,17 @@ class MainWindowController(Ui_TafaEncryptor):
             self.display_message("Error", response)
             return
 
-        chunk_size = 1024 * 1024  # 1MB
-        for i in response:
-            # read file in chunks
-            file_name = i['name']
-            new_file_name = f"{file_name.split('.')[0]}.tafa"
-            with open(i['file_path'], "rb") as file:
-                while True:
-                    chunk = file.read(chunk_size)
-                    if len(chunk) == 0:
-                        break
-                    # encrypt the chunk
-                    encrypted_chunk = fernet.encrypt(chunk)
+        chunk_size = 1024 * 1024 * 10  # 10MB
+        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
+            future = executor.submit(self.file_encryptor, fernet, chunk_size, response, output_directory)
+            status_code = future.result()
 
-                    # write the encrypted chunk
-                    with open(f"{output_directory}/{new_file_name}", "ab") as f:
-                        f.write(encrypted_chunk)
-
-                # set file id as file attribute
-                file_id = i['video_id']
-                win32api.SetFileProperty(f"{output_directory}/{new_file_name}", "FileId", file_id)
-
-                # get set the file attribute
-                file_id = win32api.GetFileProperty(f"{output_directory}/{new_file_name}", "FileId")
-                print("file", file_id)
-                print("video", i['video_id'])
-
-
-
-        self.display_message("Success", "Encryption Completed Successfully")
-        return
+            if status_code:
+                self.display_message("Success", "Encryption Completed Successfully")
+                return
+            else:
+                self.display_message("Error", "Encryption Failed")
+                return
 
     @staticmethod
     def display_message(status_code, message):
