@@ -2,6 +2,7 @@ import filecmp
 import hashlib
 import os
 from Cryptodome.Cipher import AES
+from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
@@ -146,9 +147,7 @@ class EncryptionTool:
 
         # create a cipher object
 
-        cipher_object = AES.new(
-            self.hashed_key_salt["key"], AES.MODE_CFB, self.hashed_key_salt["salt"]
-        )
+        cipher_object = Fernet(self.user_key)
         self.abort()  # if the output file already exists, remove it first
 
         input_file = open(self.user_file, "rb")
