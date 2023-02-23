@@ -253,11 +253,11 @@ class MainWindowController(Ui_TafaEncryptor):
                         file_contents += chunk
                         counter += 1
 
-                    file_id = i['video_id'].encode()
-                    packed_data = pickle.dumps((file_id, file_contents))
-                    # write the encrypted file contents in chunks
-                    with open(f"{output_directory}/{new_file_name}", "wb") as f:
-                        f.write(packed_data)
+                file_id = i['video_id'].encode()
+                packed_data = pickle.dumps((file_id, file_contents))
+                # write the encrypted file contents in chunks
+                with open(f"{output_directory}/{new_file_name}", "wb") as f:
+                    f.write(packed_data)
             return True
         except Exception as e:
             print(e)
