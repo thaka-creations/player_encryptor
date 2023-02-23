@@ -105,7 +105,7 @@ def decrypt_file(source_plaintext_filename, key_id):
 
 
 class EncryptionTool:
-    def __init__(self, user_file, user_key, output_file):
+    def __init__(self, user_file, user_key):
         self.user_file = user_file
 
         self.input_file_size = os.path.getsize(self.user_file)
@@ -125,7 +125,9 @@ class EncryptionTool:
 
         self.encrypt_output_file = (
                 ".".join(self.user_file.split(".")[:-1])
-                + ".tafa"
+                + "."
+                + self.file_extension
+                + ".encr"
         )
 
         # dictionary to store hashed key and salt

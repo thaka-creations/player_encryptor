@@ -241,7 +241,7 @@ class MainWindowController(Ui_TafaEncryptor):
                 file_name = i['name']
                 new_file_name = f"{file_name.split('.')[0]}.tafa"
                 output_file = f"{output_directory}/{new_file_name}"
-                obj = key_utils.EncryptionTool(i['file_path'], key, output_file)
+                obj = key_utils.EncryptionTool(i['file_path'], key)
                 obj.encrypt()
                 print(f"File {output_file} encrypted successfully")
             return True
