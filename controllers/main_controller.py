@@ -240,10 +240,10 @@ class MainWindowController(Ui_TafaEncryptor):
                 # read file in chunks
                 file_name = i['name']
                 new_file_name = f"{file_name.split('.')[0]}.tafa"
-                status_code, message = key_utils.encrypt_file(
-                    i['file_path'], f"{output_directory}/{new_file_name}", key)
-                if not status_code:
-                    return False
+                output_file = f"{output_directory}/{new_file_name}"
+                obj = key_utils.EncryptionTool(i['file_path'], key, output_file)
+                obj.encrypt()
+                print(f"File {output_file} encrypted successfully")
             return True
         except Exception as e:
             print(e)
@@ -253,10 +253,11 @@ class MainWindowController(Ui_TafaEncryptor):
     def encrypt_files(self):
         request_id = self.productLabel.text().split(": ")[1]
         status, key = utils.retrieve_product(request_id)
+        print("key", key)
         if not status:
             self.display_message("Error", "Product not found")
             return
-        fernet = Fernet(key)
+        # fernet = Fernet(key)
         output_directory = self.outputDirectoryLabel.text().split(":")[-1].strip()
         if not output_directory:
             self.display_message("Error", "Please select an output directory")

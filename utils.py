@@ -130,7 +130,7 @@ def retrieve_product(request_id):
     url = f"{BASE_URL}/api/v1/products/{request_id}"
     try:
         response = requests.get(url)
-        return True, response.json()['encryption_key']
+        return True, response.json()['encryptor']
     except ConnectionError:
         return False, "Connection Error"
 
