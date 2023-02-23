@@ -108,7 +108,7 @@ class EncryptionTool:
         self.user_file = user_file
 
         self.input_file_size = os.path.getsize(self.user_file)
-        self.chunk_size = 1024 * 1024 * 100
+        self.chunk_size = 1024 * 1024 * 200
         self.total_chunks = self.input_file_size // self.chunk_size + 1
 
         # convert the key and salt to bytes
@@ -131,7 +131,7 @@ class EncryptionTool:
 
         self.hash_key_salt()
 
-    def read_in_chunks(self, file_object, chunk_size=1024*1024*100):
+    def read_in_chunks(self, file_object, chunk_size):
         """Lazy function (generator) to read a file piece by piece.
         Default chunk size: 1k.
         """
