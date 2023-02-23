@@ -1,5 +1,7 @@
 import concurrent.futures
 import pickle
+
+import key_utils
 import utils
 import sys
 import user_utils
@@ -232,32 +234,16 @@ class MainWindowController(Ui_TafaEncryptor):
         self.outputDirectoryLabel.setText(f"Output Directory: {directory}")
 
     @staticmethod
-    def file_encryptor(fernet, chunk_size, response, output_directory):
+    def file_encryptor(key, response, output_directory):
         try:
             for i in response:
                 # read file in chunks
                 file_name = i['name']
                 new_file_name = f"{file_name.split('.')[0]}.tafa"
-                file_contents = b""
-                counter = 0
-                with open(i['file_path'], "rb") as file:
-                    while True:
-                        chunk = file.read(chunk_size)
-                        if len(chunk) == 0:
-                            break
-                        if counter <= 2:
-                            chunk = fernet.encrypt(chunk)
-
-                        # whole file
-
-                        file_contents += chunk
-                        counter += 1
-
-                file_id = i['video_id'].encode()
-                packed_data = pickle.dumps((file_id, file_contents))
-                # write the encrypted file contents in chunks
-                with open(f"{output_directory}/{new_file_name}", "wb") as f:
-                    f.write(packed_data)
+                status_code, message = key_utils.encrypt_file(
+                    i['file_path'], f"{output_directory}/{new_file_name}", key)
+                if not status_code:
+                    return False
             return True
         except Exception as e:
             print(e)
@@ -285,7 +271,7 @@ class MainWindowController(Ui_TafaEncryptor):
 
         chunk_size = 1024 * 1024 * 100  # 10MB
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            future = executor.submit(self.file_encryptor, fernet, chunk_size, response, output_directory)
+            future = executor.submit(self.file_encryptor, key, response, output_directory)
             status_code = future.result()
 
             if status_code:
