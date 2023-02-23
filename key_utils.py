@@ -110,13 +110,10 @@ class EncryptionTool:
         self.total_chunks = self.input_file_size // self.chunk_size + 1
 
         # convert the key and salt to bytes
-        self.user_key = bytes(user_key, "utf-8")
-        self.user_salt = bytes(user_key[::-1], "utf-8")
+        self.user_key = user_key
 
         # get the file extension
         self.file_extension = self.user_file.split(".")[-1]
-
-        self.hash_type = "SHA256"
 
         # encrypted file name
 
