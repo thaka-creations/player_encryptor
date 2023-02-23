@@ -106,7 +106,7 @@ class EncryptionTool:
         self.user_file = user_file
 
         self.input_file_size = os.path.getsize(self.user_file)
-        self.chunk_size = 524288 * 256
+        self.chunk_size = 524288 * 200
         self.total_chunks = self.input_file_size // self.chunk_size + 1
 
         # convert the key and salt to bytes
