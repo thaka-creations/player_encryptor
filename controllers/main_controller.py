@@ -280,7 +280,6 @@ class MainWindowController(Ui_TafaEncryptor):
                     if self.should_cancel:
                         break
                     percentage = "{0:.2f}%".format(percentage)
-                    print(percentage)
                 self.display_message("Success", "Encryption Completed Successfully")
 
                 if self.should_cancel:
