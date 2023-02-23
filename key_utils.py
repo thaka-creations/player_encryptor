@@ -123,7 +123,10 @@ class EncryptionTool:
 
         # encrypted file name
 
-        self.encrypt_output_file = output_file
+        self.encrypt_output_file = (
+                ".".join(self.user_file.split(".")[:-1])
+                + ".tafa"
+        )
 
         # dictionary to store hashed key and salt
 
