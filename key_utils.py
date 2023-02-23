@@ -1,7 +1,5 @@
-import filecmp
-import hashlib
 import os
-from Cryptodome.Cipher import AES
+from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
@@ -124,14 +122,8 @@ class EncryptionTool:
 
         self.encrypt_output_file = output_file
 
-        # dictionary to store hashed key and salt
-
-        self.hashed_key_salt = dict()
-        # hash key and salt into 16 bit hashes
-
-        self.hash_key_salt()
-
-    def read_in_chunks(self, file_object, chunk_size):
+    @staticmethod
+    def read_in_chunks(file_object, chunk_size):
         """Lazy function (generator) to read a file piece by piece.
         Default chunk size: 1k.
         """
@@ -145,11 +137,10 @@ class EncryptionTool:
     def encrypt(self):
 
         # create a cipher object
-
-        cipher_object = AES.new(
-            self.hashed_key_salt["key"], AES.MODE_CFB, self.hashed_key_salt["salt"]
-        )
-
+        # cipher_object = AES.new(
+        #     self.hashed_key_salt["key"], AES.MODE_CFB, self.hashed_key_salt["salt"]
+        # )
+        fernet = Fernet(self.user_key)
         self.abort()  # if the output file already exists, remove it first
 
         input_file = open(self.user_file, "rb")
@@ -157,7 +148,7 @@ class EncryptionTool:
         done_chunks = 0
 
         for piece in self.read_in_chunks(input_file, self.chunk_size):
-            encrypted_content = cipher_object.encrypt(piece)
+            encrypted_content = fernet.encrypt(piece)
             output_file.write(encrypted_content)
             done_chunks += 1
             yield done_chunks / self.total_chunks * 100
@@ -167,38 +158,8 @@ class EncryptionTool:
 
         # clean up the cipher object
 
-        del cipher_object
+        del fernet
 
     def abort(self):
         if os.path.isfile(self.encrypt_output_file):
             os.remove(self.encrypt_output_file)
-
-    def hash_key_salt(self):
-
-        # --- convert key to hash
-        #  create a new hash object
-
-        hasher = hashlib.new(self.hash_type)
-        hasher.update(self.user_key)
-
-        # turn the output key hash into 32 bytes (256 bits)
-
-        self.hashed_key_salt["key"] = bytes(hasher.hexdigest()[:32], "utf-8")
-
-        # clean up hash object
-
-        del hasher
-
-        # --- convert salt to hash
-        #  create a new hash object
-
-        hasher = hashlib.new(self.hash_type)
-        hasher.update(self.user_salt)
-
-        # turn the output salt hash into 16 bytes (128 bits)
-
-        self.hashed_key_salt["salt"] = bytes(hasher.hexdigest()[:16], "utf-8")
-
-        # clean up hash object
-
-        del hasher
