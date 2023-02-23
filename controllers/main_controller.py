@@ -1,5 +1,6 @@
 import concurrent.futures
 import pickle
+import threading
 
 import key_utils
 import utils
@@ -22,6 +23,8 @@ class Worker(QObject):
 
 
 class MainWindowController(Ui_TafaEncryptor):
+    emit_display = pyqtSignal(str, str)
+
     def __init__(self):
         self.should_cancel = False
         self.MainWindow = None
@@ -52,6 +55,7 @@ class MainWindowController(Ui_TafaEncryptor):
         # threading
         self.worker.moveToThread(self.thread)
         self.worker.start_encryption.connect(self.encrypt_files)
+        self.emit_display.connect(self.display_message)
         self.thread.started.connect(self.worker.run)
         self.worker.finished.connect(self.thread.quit)
 
@@ -234,8 +238,8 @@ class MainWindowController(Ui_TafaEncryptor):
         directory = QFileDialog.getExistingDirectory()
         self.outputDirectoryLabel.setText(f"Output Directory: {directory}")
 
-    @staticmethod
-    def file_encryptor(key, response, output_directory):
+    # encrypt the files
+    def encryptor(self, response, output_directory, key):
         try:
             for i in response:
                 # read file in chunks
@@ -243,13 +247,21 @@ class MainWindowController(Ui_TafaEncryptor):
                 new_file_name = f"{file_name.split('.')[0]}.tafa"
                 output_file = f"{output_directory}/{new_file_name}"
                 obj = key_utils.EncryptionTool(i['file_path'], key, output_file)
-                print(f"File {response} encrypted successfully")
-            return True
+                for percentage in obj.encrypt():
+                    if self.should_cancel:
+                        break
+                    percentage = "{0:.2f}%".format(percentage)
+                    print(percentage)
+                self.emit_display.emit("Success", "Encryption Completed Successfully")
+
+                if self.should_cancel:
+                    obj.abort()
+                    self.emit_display.emit("Error", "Encryption Aborted")
+                    return
         except Exception as e:
             print(e)
-            return False
+            self.emit_display.emit("Error", "Encryption Failed")
 
-    # encrypt the files
     def encrypt_files(self):
         request_id = self.productLabel.text().split(": ")[1]
         status, key = utils.retrieve_product(request_id)
@@ -268,27 +280,7 @@ class MainWindowController(Ui_TafaEncryptor):
         if not status_code:
             self.display_message("Error", response)
             return
-
-        try:
-            for i in response:
-                # read file in chunks
-                file_name = i['name']
-                new_file_name = f"{file_name.split('.')[0]}.tafa"
-                output_file = f"{output_directory}/{new_file_name}"
-                obj = key_utils.EncryptionTool(i['file_path'], key, output_file)
-                for percentage in obj.encrypt():
-                    if self.should_cancel:
-                        break
-                    percentage = "{0:.2f}%".format(percentage)
-                self.display_message("Success", "Encryption Completed Successfully")
-
-                if self.should_cancel:
-                    obj.abort()
-                    self.display_message("Error", "Encryption Aborted")
-                    return
-        except Exception as e:
-            print(e)
-            self.display_message("Error", "Encryption Failed")
+        threading.Thread(target=self.encryptor, args=(response, output_directory, key), daemon=False).start()
 
     @staticmethod
     def display_message(status_code, message):
