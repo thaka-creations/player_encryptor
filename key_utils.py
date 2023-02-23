@@ -131,7 +131,7 @@ class EncryptionTool:
 
         self.hash_key_salt()
 
-    def read_in_chunks(self, file_object, chunk_size=1024):
+    def read_in_chunks(self, file_object, chunk_size=1024*1024*100):
         """Lazy function (generator) to read a file piece by piece.
         Default chunk size: 1k.
         """
