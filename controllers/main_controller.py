@@ -23,6 +23,7 @@ class Worker(QObject):
 
 class MainWindowController(Ui_TafaEncryptor):
     def __init__(self):
+        self.should_cancel = False
         self.MainWindow = None
         if not utils.is_authenticated():
             dialog = QDialog()
@@ -241,9 +242,8 @@ class MainWindowController(Ui_TafaEncryptor):
                 file_name = i['name']
                 new_file_name = f"{file_name.split('.')[0]}.tafa"
                 output_file = f"{output_directory}/{new_file_name}"
-                obj = key_utils.EncryptionTool(i['file_path'], key)
-                obj.encrypt()
-                print(f"File {output_file} encrypted successfully")
+                obj = key_utils.EncryptionTool(i['file_path'], key, output_file)
+                print(f"File {response} encrypted successfully")
             return True
         except Exception as e:
             print(e)
@@ -253,7 +253,6 @@ class MainWindowController(Ui_TafaEncryptor):
     def encrypt_files(self):
         request_id = self.productLabel.text().split(": ")[1]
         status, key = utils.retrieve_product(request_id)
-        print("key", key)
         if not status:
             self.display_message("Error", "Product not found")
             return
@@ -270,17 +269,27 @@ class MainWindowController(Ui_TafaEncryptor):
             self.display_message("Error", response)
             return
 
-        chunk_size = 1024 * 1024 * 100  # 10MB
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            future = executor.submit(self.file_encryptor, key, response, output_directory)
-            status_code = future.result()
-
-            if status_code:
+        try:
+            for i in response:
+                # read file in chunks
+                file_name = i['name']
+                new_file_name = f"{file_name.split('.')[0]}.tafa"
+                output_file = f"{output_directory}/{new_file_name}"
+                obj = key_utils.EncryptionTool(i['file_path'], key, output_file)
+                for percentage in obj.encrypt():
+                    if self.should_cancel:
+                        break
+                    percentage = "{0:.2f}%".format(percentage)
+                    print(percentage)
                 self.display_message("Success", "Encryption Completed Successfully")
-                return
-            else:
-                self.display_message("Error", "Encryption Failed")
-                return
+
+                if self.should_cancel:
+                    obj.abort()
+                    self.display_message("Error", "Encryption Aborted")
+                    return
+        except Exception as e:
+            print(e)
+            self.display_message("Error", "Encryption Failed")
 
     @staticmethod
     def display_message(status_code, message):

@@ -1,7 +1,6 @@
 import filecmp
 import hashlib
 import os
-
 from Cryptodome.Cipher import AES
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
@@ -105,7 +104,7 @@ def decrypt_file(source_plaintext_filename, key_id):
 
 
 class EncryptionTool:
-    def __init__(self, user_file, user_key):
+    def __init__(self, user_file, user_key, output_file):
         self.user_file = user_file
 
         self.input_file_size = os.path.getsize(self.user_file)
@@ -123,12 +122,7 @@ class EncryptionTool:
 
         # encrypted file name
 
-        self.encrypt_output_file = (
-                ".".join(self.user_file.split(".")[:-1])
-                + "."
-                + self.file_extension
-                + ".encr"
-        )
+        self.encrypt_output_file = output_file
 
         # dictionary to store hashed key and salt
 
@@ -137,8 +131,7 @@ class EncryptionTool:
 
         self.hash_key_salt()
 
-    @staticmethod
-    def read_in_chunks(file_object, chunk_size=1024):
+    def read_in_chunks(self, file_object, chunk_size=1024):
         """Lazy function (generator) to read a file piece by piece.
         Default chunk size: 1k.
         """
@@ -156,6 +149,7 @@ class EncryptionTool:
         cipher_object = AES.new(
             self.hashed_key_salt["key"], AES.MODE_CFB, self.hashed_key_salt["salt"]
         )
+        print("test 1")
 
         self.abort()  # if the output file already exists, remove it first
 
@@ -173,6 +167,7 @@ class EncryptionTool:
         output_file.close()
 
         # clean up the cipher object
+        print("test 2")
 
         del cipher_object
 
