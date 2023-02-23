@@ -239,26 +239,25 @@ class MainWindowController(Ui_TafaEncryptor):
                 file_name = i['name']
                 new_file_name = f"{file_name.split('.')[0]}.tafa"
                 file_contents = b""
+                counter = 0
                 with open(i['file_path'], "rb") as file:
                     while True:
                         chunk = file.read(chunk_size)
                         if len(chunk) == 0:
                             break
+                        if counter <= 3:
+                            chunk = fernet.encrypt(chunk)
 
                         # whole file
 
                         file_contents += chunk
+                        counter += 1
 
-                    # encrypt file contents
-                    encrypted_file_contents = fernet.encrypt(file_contents)
                     file_id = i['video_id'].encode()
-                    packed_data = pickle.dumps((file_id, encrypted_file_contents))
+                    packed_data = pickle.dumps((file_id, file_contents))
                     # write the encrypted file contents in chunks
-                    for k in range(0, len(packed_data), chunk_size):
-                        chunk = encrypted_file_contents[k:k + chunk_size]
-
-                        with open(f"{output_directory}/{new_file_name}", "ab") as f:
-                            f.write(chunk)
+                    with open(f"{output_directory}/{new_file_name}", "ab") as f:
+                        f.write(packed_data)
             return True
         except Exception as e:
             print(e)
