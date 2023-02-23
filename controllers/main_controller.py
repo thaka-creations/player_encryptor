@@ -245,7 +245,7 @@ class MainWindowController(Ui_TafaEncryptor):
                         chunk = file.read(chunk_size)
                         if len(chunk) == 0:
                             break
-                        if counter <= 3:
+                        if counter <= 2:
                             chunk = fernet.encrypt(chunk)
 
                         # whole file
@@ -283,8 +283,8 @@ class MainWindowController(Ui_TafaEncryptor):
             self.display_message("Error", response)
             return
 
-        chunk_size = 1024 * 1024 * 10  # 10MB
-        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
+        chunk_size = 1024 * 1024 * 100  # 10MB
+        with concurrent.futures.ThreadPoolExecutor() as executor:
             future = executor.submit(self.file_encryptor, fernet, chunk_size, response, output_directory)
             status_code = future.result()
 
