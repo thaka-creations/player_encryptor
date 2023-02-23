@@ -2,7 +2,6 @@ import filecmp
 import hashlib
 import os
 from Cryptodome.Cipher import AES
-from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
@@ -113,14 +112,24 @@ class EncryptionTool:
         self.total_chunks = self.input_file_size // self.chunk_size + 1
 
         # convert the key and salt to bytes
-        self.user_key = user_key
+        self.user_key = bytes(user_key, "utf-8")
+        self.user_salt = bytes(user_key[::-1], "utf-8")
 
         # get the file extension
         self.file_extension = self.user_file.split(".")[-1]
 
+        self.hash_type = "SHA256"
+
         # encrypted file name
 
         self.encrypt_output_file = output_file
+
+        # dictionary to store hashed key and salt
+
+        self.hashed_key_salt = dict()
+        # hash key and salt into 16 bit hashes
+
+        self.hash_key_salt()
 
     def read_in_chunks(self, file_object, chunk_size=1024):
         """Lazy function (generator) to read a file piece by piece.
@@ -137,7 +146,9 @@ class EncryptionTool:
 
         # create a cipher object
 
-        fernet = Fernet(self.user_key)
+        cipher_object = AES.new(
+            self.hashed_key_salt["key"], AES.MODE_CFB, self.hashed_key_salt["salt"]
+        )
         self.abort()  # if the output file already exists, remove it first
 
         input_file = open(self.user_file, "rb")
@@ -145,7 +156,7 @@ class EncryptionTool:
         done_chunks = 0
 
         for piece in self.read_in_chunks(input_file, self.chunk_size):
-            encrypted_content = fernet.encrypt(piece)
+            encrypted_content = cipher_object.encrypt(piece)
             output_file.write(encrypted_content)
             done_chunks += 1
             yield done_chunks / self.total_chunks * 100
@@ -153,8 +164,7 @@ class EncryptionTool:
         input_file.close()
         output_file.close()
 
-        # clean up the cipher object
-        del fernet
+        del cipher_object
 
     def abort(self):
         if os.path.isfile(self.encrypt_output_file):
