@@ -49,7 +49,7 @@ class EncryptionTool:
         # create a cipher object
 
         cipher_object = AES.new(
-            self.hashed_key_salt["key"], AES.MODE_CFB, self.hashed_key_salt["salt"]
+            self.hashed_key_salt["key"], AES.MODE_CFB
         )
 
         self.abort()  # if the output file already exists, remove it first
@@ -59,7 +59,7 @@ class EncryptionTool:
         done_chunks = 0
 
         for piece in self.read_in_chunks(input_file, self.chunk_size):
-            encrypted_content = cipher_object.encrypt(pad(piece, AES.block_size))
+            encrypted_content = cipher_object.encrypt(piece)
             output_file.write(encrypted_content)
             done_chunks += 1
             yield done_chunks / self.total_chunks * 100
