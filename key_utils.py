@@ -1,6 +1,10 @@
 import hashlib
+import json
 import os
+from base64 import b64encode
+
 from Cryptodome.Cipher import AES
+from Cryptodome.Random import get_random_bytes
 from Cryptodome.Util.Padding import pad
 
 
@@ -47,7 +51,8 @@ class EncryptionTool:
     def encrypt(self):
 
         # create a cipher object
-        header = b'tafa'
+        header = b'header'
+        key = get_random_bytes(16)
         cipher = AES.new(
             self.hashed_key_salt["key"], AES.MODE_OCB
         )
@@ -56,20 +61,29 @@ class EncryptionTool:
         self.abort()  # if the output file already exists, remove it first
 
         input_file = open(self.user_file, "rb")
-        output_file = open(self.encrypt_output_file, "ab")
-        done_chunks = 0
 
+        ciphertext = b''
         for piece in self.read_in_chunks(input_file, self.chunk_size):
-            ciphertext = cipher.encrypt(piece)
-            output_file.write(ciphertext)
-            done_chunks += 1
-            yield done_chunks / self.total_chunks * 100
+            ciphertext += cipher.encrypt(piece)
+        ciphertext += cipher.encrypt()
         input_file.close()
-        output_file.close()
+        tag = cipher.digest()
+        json_k = ['nonce', 'header', 'ciphertext', 'tag']
+        json_v = [b64encode(x).decode('utf-8') for x in (cipher.nonce, header, ciphertext, tag) ]
+        result = bytes(json.dumps(dict(zip(json_k, json_v))), encoding="utf-8")
 
-        # clean up the cipher object
+        total_chunks = len(result)//self.chunk_size + 1
+        done_chunks = 0
+        with open(self.encrypt_output_file, "ab") as f:
+            offset = 0
+            while offset < len(result):
+                f.write(result[offset:offset+self.chunk_size])
+                offset += self.chunk_size
+                done_chunks += 1
+                yield done_chunks / total_chunks * 100
 
         del cipher
+        del result
 
     def abort(self):
         if os.path.isfile(self.encrypt_output_file):
