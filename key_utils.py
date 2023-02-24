@@ -47,10 +47,11 @@ class EncryptionTool:
     def encrypt(self):
 
         # create a cipher object
-
-        cipher_object = AES.new(
-            self.hashed_key_salt["key"], AES.MODE_CFB
+        header = b'tafa'
+        cipher = AES.new(
+            self.hashed_key_salt["key"], AES.MODE_OCB
         )
+        cipher.update(header)
 
         self.abort()  # if the output file already exists, remove it first
 
@@ -59,17 +60,16 @@ class EncryptionTool:
         done_chunks = 0
 
         for piece in self.read_in_chunks(input_file, self.chunk_size):
-            encrypted_content = cipher_object.encrypt(piece)
-            output_file.write(encrypted_content)
+            ciphertext = cipher.encrypt(piece)
+            output_file.write(ciphertext)
             done_chunks += 1
             yield done_chunks / self.total_chunks * 100
-
         input_file.close()
         output_file.close()
 
         # clean up the cipher object
 
-        del cipher_object
+        del cipher
 
     def abort(self):
         if os.path.isfile(self.encrypt_output_file):
