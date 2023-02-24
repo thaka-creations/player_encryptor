@@ -51,12 +51,9 @@ class EncryptionTool:
     def encrypt(self):
 
         # create a cipher object
-        header = b'header'
-        key = get_random_bytes(16)
         cipher = AES.new(
-            self.hashed_key_salt["key"], AES.MODE_OCB
+            self.hashed_key_salt["key"], AES.MODE_OFB
         )
-        cipher.update(header)
 
         self.abort()  # if the output file already exists, remove it first
 
@@ -65,11 +62,9 @@ class EncryptionTool:
         ciphertext = b''
         for piece in self.read_in_chunks(input_file, self.chunk_size):
             ciphertext += cipher.encrypt(piece)
-        ciphertext += cipher.encrypt()
         input_file.close()
-        tag = cipher.digest()
-        json_k = ['nonce', 'header', 'ciphertext', 'tag']
-        json_v = [b64encode(x).decode('utf-8') for x in (cipher.nonce, header, ciphertext, tag) ]
+        json_k = ['iv', 'ciphertext']
+        json_v = [b64encode(x).decode('utf-8') for x in (cipher.iv, ciphertext)]
         result = bytes(json.dumps(dict(zip(json_k, json_v))), encoding="utf-8")
 
         total_chunks = len(result)//self.chunk_size + 1
