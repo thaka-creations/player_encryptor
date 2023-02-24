@@ -1,6 +1,7 @@
 import hashlib
 import os
 from Cryptodome.Cipher import AES
+from Cryptodome.Util.Padding import pad
 
 
 class EncryptionTool:
@@ -58,7 +59,7 @@ class EncryptionTool:
         done_chunks = 0
 
         for piece in self.read_in_chunks(input_file, self.chunk_size):
-            encrypted_content = cipher_object.encrypt(piece)
+            encrypted_content = cipher_object.encrypt(pad(piece, AES.block_size))
             output_file.write(encrypted_content)
             done_chunks += 1
             yield done_chunks / self.total_chunks * 100
