@@ -9,7 +9,7 @@ from Cryptodome.Util.Padding import pad
 
 
 class EncryptionTool:
-    def __init__(self, user_file, user_key, output_file):
+    def __init__(self, user_file, user_key, file_id, output_file):
         self.user_file = user_file
 
         self.input_file_size = os.path.getsize(self.user_file)
@@ -19,6 +19,7 @@ class EncryptionTool:
         # convert the key and salt to bytes
         self.user_key = bytes(user_key, "utf-8")
         self.user_salt = bytes(user_key[::-1], "utf-8")
+        self.file_id = file_id
 
         # get the file extension
         self.file_extension = self.user_file.split(".")[-1]
@@ -63,8 +64,8 @@ class EncryptionTool:
         for piece in self.read_in_chunks(input_file, self.chunk_size):
             ciphertext += cipher.encrypt(piece)
         input_file.close()
-        json_k = ['iv', 'ciphertext']
-        json_v = [b64encode(x).decode('utf-8') for x in (cipher.iv, ciphertext)]
+        json_k = ['iv', 'ciphertext', 'extra']
+        json_v = [b64encode(x).decode('utf-8') for x in (cipher.iv, ciphertext, self.file_id)]
         result = bytes(json.dumps(dict(zip(json_k, json_v))), encoding="utf-8")
 
         total_chunks = len(result)//self.chunk_size + 1

@@ -244,9 +244,10 @@ class MainWindowController(Ui_TafaEncryptor):
             for i in response:
                 # read file in chunks
                 file_name = i['name']
+                file_id = i['video_id'].encode()
                 new_file_name = f"{file_name.split('.')[0]}.tafa"
                 output_file = f"{output_directory}/{new_file_name}"
-                obj = key_utils.EncryptionTool(i['file_path'], key, output_file)
+                obj = key_utils.EncryptionTool(i['file_path'], key, file_id, output_file)
                 for percentage in obj.encrypt():
                     if self.should_cancel:
                         break
